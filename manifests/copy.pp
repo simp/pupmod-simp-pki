@@ -43,10 +43,10 @@ define pki::copy (
   include '::pki'
 
   file { "${name}/pki":
-    ensure  => 'directory',
-    owner   => $owner,
-    group   => $group,
-    mode    => '0640'
+    ensure => 'directory',
+    owner  => $owner,
+    group  => $group,
+    mode   => '0640'
   }
 
   file { "${name}/pki/public":

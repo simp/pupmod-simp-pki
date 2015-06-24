@@ -20,7 +20,6 @@ describe 'pki' do
     it { should create_file('/etc/pki/public').with_ensure('directory') }
     it { should create_file('/etc/pki/private/test.example.domain.pem') }
     it { should create_file('/etc/pki/public/test.example.domain.pub') }
-    it { should create_file('/etc/pki/public/test.example.domain_rsa.pem') }
     it { should create_file('/etc/pki/cacerts').with_ensure('directory') }
   end
 end

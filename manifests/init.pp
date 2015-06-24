@@ -80,19 +80,19 @@ class pki (
   }
 
   file { "/etc/pki/private/${::fqdn}.pem":
-    owner    => 'root',
-    group    => 'root',
-    mode     => '0440',
-    source   => "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
-    tag      => 'firstrun'
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0440',
+    source => "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
+    tag    => 'firstrun'
   }
 
   file { "/etc/pki/public/${::fqdn}.pub":
-    owner    => 'root',
-    group    => 'root',
-    mode     => '0444',
-    source   => "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
-    tag      => 'firstrun'
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0444',
+    source => "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
+    tag    => 'firstrun'
   }
 
   # This is a temporary holding space for certs coming from the Puppet server.
