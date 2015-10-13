@@ -1,0 +1,11 @@
+.*.sw?
+/Gemfile.lock
+/.rspec_system
+/.vagrant
+/.bundle
+/dist
+/junit
+/log
+/pkg
+/vendor
+/spec/fixtures
