@@ -13,10 +13,11 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
     @concatted_certs = ''
 
     Dir.chdir(src) do
-      # Get all the files, but not the symlinks.
-      to_parse = Dir.glob('*').sort
+      # Get all the files, but not the symlinks, or directories.
+      to_parse = Dir.glob('**/*').sort
       to_parse.delete_if{|x| File.symlink?(x)}
       to_parse.delete_if{|x| x == 'cacerts.pem' }
+      to_parse.delete_if{|x| File.directory?(x) }
 
       # Determine what they all hash to.
       to_parse.each do |file|
@@ -67,7 +68,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
 
     insync = true
     Dir.chdir(target) do
-      files = Dir.glob('*').sort
+      files = Dir.glob('**/*').select { |f| File.file?(f) }
 
       # If we're purging, and the number of files is different, then we're
       # not in sync.
@@ -111,7 +112,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
       if resource[:purge] == :true then
         # Make sure not to delete things that we might currently be using or
         # their symlinks.
-        (Dir.glob('*') - [@to_link.to_a].flatten).each do |to_purge|
+        (Dir.glob('**/*') - [@to_link.to_a].flatten).each do |to_purge|
           if not File.directory?(to_purge) then
             Puppet.notice("Purging '#{resource[:name]}/#{to_purge}'")
             FileUtils.rm_f(to_purge)
@@ -147,6 +148,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
 
 
         unless src == 'cacerts.pem' then
+          FileUtils.mkdir_p(File.dirname(src)) if File.dirname(src) != '.'
           FileUtils.cp("#{resource[:source]}/#{src}",src,{:preserve => true})
           resource.set_selinux_context("#{resource[:name]}/#{src}",selinux_context).nil? and
             Puppet.debug("Could not set selinux context on '#{src}'")

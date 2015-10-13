@@ -106,6 +106,7 @@ class pki (
     recurse      => true,
     mode         => '0644',
     purge        => true,
+    force        => true,
     seltype      => 'cert_t',
     source       => [
       'puppet:///modules/pki/keydist/cacerts',
