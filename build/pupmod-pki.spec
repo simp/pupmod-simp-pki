@@ -1,7 +1,7 @@
 Summary: PKI Puppet Module
 Name: pupmod-pki
 Version: 4.1.0
-Release: 4
+Release: 5
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -55,6 +55,12 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Tue Oct 13 2015 Nick Markowski <nmarkowski@keywcorp.com> - 4.1.0-5
+- If a directory is placed in keydist/cacerts, the directory structure is copied
+  to pki/cacerts, and all certs in subdirectories are appended to cacerts.pem.
+- If a directory is removed from keydist/cacerts, it is now forcibly removed
+  from .cacerts_ingress.
+
 * Thu Feb 12 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.1.0-4
 - Moved things to the new 'simp' environment
 - Ensure the requirements on packages are appropriately defined
