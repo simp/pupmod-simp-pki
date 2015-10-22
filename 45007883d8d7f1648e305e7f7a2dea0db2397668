@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "9ab29df4_08af9ce4",
+        "filename": "spec/classes/init_spec.rb",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1004834
+      },
+      "writtenOn": "2015-10-22T16:25:09Z",
+      "side": 1,
+      "message": "Whitespace",
+      "revId": "45007883d8d7f1648e305e7f7a2dea0db2397668",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9ab29df4_af095f2e",
         "filename": "spec/spec_helper.rb",
         "patchSetId": 3
