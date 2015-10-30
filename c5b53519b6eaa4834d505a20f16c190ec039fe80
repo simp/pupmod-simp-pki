@@ -1,0 +1,268 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab29df4_4e426511",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "Please keep commit message lines to a maximum of 72 characters",
+      "range": {
+        "startLine": 9,
+        "startChar": 72,
+        "endLine": 9,
+        "endChar": 78
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_6e472920",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "me, too",
+      "range": {
+        "startLine": 10,
+        "startChar": 72,
+        "endLine": 10,
+        "endChar": 76
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_8e4b9d2a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "me, three",
+      "range": {
+        "startLine": 12,
+        "startChar": 72,
+        "endLine": 12,
+        "endChar": 74
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_ae48612e",
+        "filename": "Gemfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "This line can be removed (especially if 1.0.10 is the minimum requirement now)",
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_ce03d5b6",
+        "filename": "metadata.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "This is ambiguous enough where users might assume this module manages PKI integration for applications.\n\nA more specific summary could be something like \"Manages  non-Puppet PKI keys and certificates\"",
+      "range": {
+        "startLine": 5,
+        "startChar": 14,
+        "endLine": 5,
+        "endChar": 24
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_aee4e10d",
+        "filename": "spec/acceptance/class_spec.rb",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "These tests are great!",
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_0ed4ed1e",
+        "filename": "spec/acceptance/nodesets/centos-511-x64.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "Feel free to delete this file; we\u0027ll never use it.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_8ec47d93",
+        "filename": "spec/acceptance/nodesets/debian-609-x64.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "Feel free to delete this file; we\u0027ll never use it.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_aec14182",
+        "filename": "spec/acceptance/nodesets/debian-76-x64.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "Feel free to delete this file; we\u0027ll never use it.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_cebe75ff",
+        "filename": "spec/acceptance/nodesets/fedora-20-x64.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "Feel free to delete this file; we probably won\u0027t have a use for it in the next few years.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_eebb390c",
+        "filename": "spec/acceptance/nodesets/ubuntu-server-1204-x64.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "Feel free to delete this file; we\u0027ll never use it.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ab29df4_0e386d9f",
+        "filename": "spec/acceptance/nodesets/ubuntu-server-1404-x64.yml",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1005143
+      },
+      "writtenOn": "2015-10-30T16:49:07Z",
+      "side": 1,
+      "message": "Feel free to delete this file; we\u0027ll never use it.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "c5b53519b6eaa4834d505a20f16c190ec039fe80",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
