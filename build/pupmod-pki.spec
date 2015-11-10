@@ -1,7 +1,7 @@
 Summary: PKI Puppet Module
 Name: pupmod-pki
 Version: 4.1.0
-Release: 5
+Release: 6
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -55,6 +55,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-6
+- migration to simplib and simpcat (lib/ only)
+
 * Tue Oct 13 2015 Nick Markowski <nmarkowski@keywcorp.com> - 4.1.0-5
 - If a directory is placed in keydist/cacerts, the directory structure is copied
   to pki/cacerts, and all certs in subdirectories are appended to cacerts.pem.
@@ -127,7 +130,7 @@ fi
 * Tue Oct 26 2010 Trevor Vaughan <tvaughan@onyxpoint.com> - 1-2
 - Converting all spec files to check for directories prior to copy.
 
-* Tue Jun 10 2010 Trevor Vaughan <tvaughan@onyxpoint.com> - 1.0-1
+* Thu Jun 10 2010 Trevor Vaughan <tvaughan@onyxpoint.com> - 1.0-1
 - No templates to copy in caused an RPM build failure.
 
 * Mon May 24 2010 Trevor Vaughan <tvaughan@onyxpoint.com> - 1.0-0
