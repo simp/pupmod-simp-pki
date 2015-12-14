@@ -1,7 +1,7 @@
 Summary: PKI Puppet Module
 Name: pupmod-pki
 Version: 4.1.0
-Release: 6
+Release: 7
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -10,9 +10,9 @@ Requires: pupmod-auditd >= 2.0.0-0
 Requires: puppet >= 3.7.4
 Requires: simp-bootstrap >= 4.2.0
 Buildarch: noarch
-Obsoletes: pupmod-pki-test
+Obsoletes: pupmod-pki-test >= 0.0.1
 
-Prefix: /etc/puppet/environments/simp/modules
+Prefix: %{_sysconfdir}/puppet/environments/simp/modules
 
 %description
 This Puppet module provides the ability to distribute and manage PKI keys for
@@ -55,8 +55,11 @@ fi
 # Post uninstall stuff
 
 %changelog
-* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-6
-- migration to simplib and simpcat (lib/ only)
+* Mon Dec 14 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.1.0-7
+- Remove erroneous test5.simp.vm key from the keydist directory
+
+* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onyxpoint.com> - 4.1.0-6
+- Migration to simplib and simpcat (lib/ only)
 
 * Tue Oct 13 2015 Nick Markowski <nmarkowski@keywcorp.com> - 4.1.0-5
 - If a directory is placed in keydist/cacerts, the directory structure is copied
