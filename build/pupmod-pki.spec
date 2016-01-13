@@ -1,7 +1,7 @@
 Summary: PKI Puppet Module
 Name: pupmod-pki
 Version: 4.1.0
-Release: 7
+Release: 8
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -55,6 +55,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Jan 18 2016 Carl Caum <carl@puppetlabs.com> - 4.1.0-8
+- Allow PKI file content source to be modified.
+
 * Mon Dec 14 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.1.0-7
 - Remove erroneous test5.simp.vm key from the keydist directory
 
