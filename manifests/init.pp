@@ -31,13 +31,27 @@
 #    If set to 'true' (the default), the /etc/pki/cacerts directory will have
 #    any non-recognized certificates removed.
 #
+# [*private_key_source*]
+#  Type: String
+#  Default: puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem
+#    The source of the private key content. This parameter accepts the same
+#    values as the file type's source parameter.
+#
+# [*public_key_source*]
+#  Type: String
+#  Default: puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem
+#    The source of the private key content. This parameter accepts the same
+#    values as the file type's source parameter.
+#
 # == Authors
 #
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 class pki (
   $enable_audit = true,
-  $sync_purge = true
+  $sync_purge = true,
+  $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
+  $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
 ) {
   if $enable_audit {
     include 'auditd'
@@ -83,7 +97,7 @@ class pki (
     owner  => 'root',
     group  => 'root',
     mode   => '0440',
-    source => "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
+    source => $private_key_source,
     tag    => 'firstrun'
   }
 
@@ -91,7 +105,7 @@ class pki (
     owner  => 'root',
     group  => 'root',
     mode   => '0444',
-    source => "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
+    source => $public_key_source,
     tag    => 'firstrun'
   }
 
