@@ -53,6 +53,9 @@ class pki (
   $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
   $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
 ) {
+  validate_bool($enable_audit)
+  validate_bool($sync_purge)
+
   if $enable_audit {
     include 'auditd'
 
@@ -145,7 +148,4 @@ class pki (
     tag    => 'firstrun',
     purge  => $sync_purge
   }
-
-  validate_bool($enable_audit)
-  validate_bool($sync_purge)
 }
