@@ -39,6 +39,9 @@ class pki (
   $enable_audit = true,
   $sync_purge = true
 ) {
+  validate_bool($enable_audit)
+  validate_bool($sync_purge)
+
   if $enable_audit {
     include 'auditd'
 
@@ -131,7 +134,4 @@ class pki (
     tag    => 'firstrun',
     purge  => $sync_purge
   }
-
-  validate_bool($enable_audit)
-  validate_bool($sync_purge)
 }
