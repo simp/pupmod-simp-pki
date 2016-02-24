@@ -1,7 +1,7 @@
 Summary: PKI Puppet Module
 Name: pupmod-pki
 Version: 4.1.0
-Release: 8
+Release: 9
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -11,6 +11,7 @@ Requires: puppet >= 3.7.4
 Requires: simp-bootstrap >= 4.2.0
 Buildarch: noarch
 Obsoletes: pupmod-pki-test >= 0.0.1
+Requires: pupmod-onyxpoint-compliance_markup
 
 Prefix: %{_sysconfdir}/puppet/environments/simp/modules
 
@@ -55,6 +56,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Tue Feb 23 2016 Ralph Wright <ralph.wright@onyxpoint.com> - 4.1.0-9
+- Added compliance function support
+
 * Mon Jan 18 2016 Carl Caum <carl@puppetlabs.com> - 4.1.0-8
 - Allow PKI file content source to be modified.
 

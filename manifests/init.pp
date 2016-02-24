@@ -56,6 +56,8 @@ class pki (
   validate_bool($enable_audit)
   validate_bool($sync_purge)
 
+  compliance_map()
+
   if $enable_audit {
     include 'auditd'
 

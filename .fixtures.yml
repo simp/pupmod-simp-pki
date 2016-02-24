@@ -9,5 +9,6 @@ fixtures:
     augeasproviders: "git://github.com/simp/augeasproviders"
     augeasproviders_core: "git://github.com/simp/augeasproviders_core"
     augeasproviders_grub: "git://github.com/simp/augeasproviders_grub"
+    compliance: "https://github.com/trevor-vaughan/pupmod-compliance"
   symlinks:
     pki: "#{source_dir}"
