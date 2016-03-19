@@ -22,6 +22,16 @@
 #
 #   Created directory => /foo/bar/pki
 #
+# [*source*]
+# Type: Absolute Path
+# Default: '/etc/pki'
+#   The path to the PKI directory that you wish to copy. This should have the following structure:
+#     * <path>/cacerts
+#     * <path>/private
+#     * <path>/public
+#
+#   NOTE: No other directories will be copied!
+#
 # [*owner*]
 # Type: String
 # Default: root
@@ -32,15 +42,31 @@
 # Default: root
 #   The group of the directories/files that get copied.
 #
+# [*use_simp_pki*]
+# Type: Boolean
+# Default: true
+#   If true, use the SIMP PKI stack for certificate management.
+#
 # == Authors
 #
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define pki::copy (
+  $source = '/etc/pki',
   $owner = 'root',
-  $group = 'root'
+  $group = 'root',
+  $use_simp_pki = defined('$::use_simp_pki') ? { true => $::use_simp_pki, default => hiera('use_simp_pki', true) }
 ) {
-  include '::pki'
+  validate_absolute_path($source)
+  validate_string($owner)
+  validate_string($group)
+  validate_bool($use_simp_pki)
+
+  if $use_simp_pki {
+    include '::pki'
+
+    Class['pki'] -> Pki::Copy[$name]
+  }
 
   file { "${name}/pki":
     ensure => 'directory',
@@ -55,8 +81,7 @@ define pki::copy (
     group   => $group,
     mode    => '0640',
     recurse => true,
-    source  => '/etc/pki/public',
-    require => Class['pki']
+    source  => "${source}/public"
   }
 
   file { "${name}/pki/private":
@@ -65,8 +90,7 @@ define pki::copy (
     group   => $group,
     mode    => '0640',
     recurse => true,
-    source  => '/etc/pki/private',
-    require => Class['pki']
+    source  => "${source}/private"
   }
 
   file { "${name}/pki/cacerts":
@@ -76,7 +100,6 @@ define pki::copy (
     mode    => '0640',
     seltype => 'cert_t',
     recurse => true,
-    source  => '/etc/pki/cacerts',
-    require => Class['pki']
+    source  => "${source}/cacerts"
   }
 }

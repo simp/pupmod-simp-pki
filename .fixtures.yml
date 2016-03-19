@@ -6,9 +6,15 @@ fixtures:
     simplib: "git://github.com/simp/pupmod-simp-simplib"
     simpcat: "git://github.com/simp/pupmod-simp-concat"
     stdlib: "git://github.com/simp/puppetlabs-stdlib"
-    augeasproviders: "git://github.com/simp/augeasproviders"
-    augeasproviders_core: "git://github.com/simp/augeasproviders_core"
-    augeasproviders_grub: "git://github.com/simp/augeasproviders_grub"
+    augeasproviders:
+      repo : "git://github.com/simp/augeasproviders"
+      branch : "simp-master"
+    augeasproviders_core:
+      repo : "git://github.com/simp/augeasproviders_core"
+      branch : "simp-master"
+    augeasproviders_grub:
+      repo : "git://github.com/simp/augeasproviders_grub"
+      branch : "simp-master"
     compliance: "https://github.com/trevor-vaughan/pupmod-compliance"
   symlinks:
     pki: "#{source_dir}"
