@@ -1,7 +1,7 @@
 Summary: PKI Puppet Module
 Name: pupmod-pki
-Version: 4.1.0
-Release: 9
+Version: 4.2.0
+Release: 0
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -56,6 +56,10 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Sat Mar 19 2016 Trevor Vaughan <tvaughan@onyxpoint.comm> - 4.2.0-0
+- Added the ability to copy from arbitrary OS locations for pki::copy. This was
+  mainly to support stunnel.
+
 * Tue Feb 23 2016 Ralph Wright <ralph.wright@onyxpoint.com> - 4.1.0-9
 - Added compliance function support
 
