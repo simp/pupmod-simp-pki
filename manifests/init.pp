@@ -52,27 +52,46 @@ class pki (
   $sync_purge = true,
   $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
   $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
+  $cacerts_sources     = [
+      'puppet:///modules/pki/keydist/cacerts',
+      "puppet:///modules/pki/keydist/cacerts/${::fqdn}/cacerts"
+  ]
 ) {
   validate_bool($enable_audit)
   validate_bool($sync_purge)
+  validate_array($cacerts_sources)
 
   compliance_map()
 
+  # These are for reference by other modules and provide a consistent interface
+  # for future updates.
+  $pki_dir         = '/etc/pki'
+  $private_key_dir = "${pki_dir}/private"
+  $public_key_dir  = "${pki_dir}/public"
+  $private_key     = "${private_key_dir}/${::fqdn}.pem"
+  $public_key      = "${public_key_dir}/${::fqdn}.pub"
+  $cacerts         = "${pki_dir}/cacerts"
+  $cacertfile      = "${pki_dir}/cacerts/cacerts.pem"
+
+  # For those that are pedantically aware...
+  $public_cert_dir = $public_key_dir
+  $public_cert     = $public_key
+
   if $enable_audit {
-    include 'auditd'
+    include '::auditd'
 
     # Add audit rules for PKI key material
 
     auditd::add_rules { 'pki':
-      content => "-w /etc/pki/private -p wa -k PKI
--w /etc/pki/public -p wa -k PKI
--w /etc/pki/cacerts -p wa -k PKI
--w /etc/pki/private/${::fqdn}.pem -p wa -k PKI
--w /etc/pki/public/${::fqdn}.pub -p wa -k PKI"
+      content => "-w ${private_key_dir} -p wa -k PKI
+-w ${public_key_dir} -p wa -k PKI
+-w ${cacerts} -p wa -k PKI
+-w ${private_key} -p wa -k PKI
+-w ${public_key} -p wa -k PKI"
     }
   }
 
-  file { '/etc/pki':
+  file { $pki_dir:
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
@@ -80,7 +99,7 @@ class pki (
     tag    => 'firstrun'
   }
 
-  file { '/etc/pki/private':
+  file { $private_key_dir:
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
@@ -89,7 +108,7 @@ class pki (
     tag    => 'firstrun'
   }
 
-  file { '/etc/pki/public':
+  file { $public_key_dir:
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
@@ -98,7 +117,7 @@ class pki (
     tag    => 'firstrun'
   }
 
-  file { "/etc/pki/private/${::fqdn}.pem":
+  file { $private_key:
     owner  => 'root',
     group  => 'root',
     mode   => '0440',
@@ -106,7 +125,7 @@ class pki (
     tag    => 'firstrun'
   }
 
-  file { "/etc/pki/public/${::fqdn}.pub":
+  file { $public_key:
     owner  => 'root',
     group  => 'root',
     mode   => '0444',
@@ -116,7 +135,7 @@ class pki (
 
   # This is a temporary holding space for certs coming from the Puppet server.
   # The pki_cert_sync type will take care of placing them appropriately.
-  $ingress = '/etc/pki/.cacerts_ingress'
+  $ingress = "${pki_dir}/.cacerts_ingress"
 
   file { $ingress:
     ensure       => 'directory',
@@ -127,15 +146,12 @@ class pki (
     purge        => true,
     force        => true,
     seltype      => 'cert_t',
-    source       => [
-      'puppet:///modules/pki/keydist/cacerts',
-      "puppet:///modules/pki/keydist/cacerts/${::fqdn}/cacerts"
-    ],
+    source       => $cacerts_sources,
     sourceselect => 'all',
     tag          => 'firstrun'
   }
 
-  file { '/etc/pki/cacerts':
+  file { $cacerts:
     ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
@@ -145,7 +161,7 @@ class pki (
     tag     => 'firstrun'
   }
 
-  pki_cert_sync { '/etc/pki/cacerts':
+  pki_cert_sync { $cacerts:
     source => $ingress,
     tag    => 'firstrun',
     purge  => $sync_purge
