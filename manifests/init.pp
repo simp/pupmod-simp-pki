@@ -2,11 +2,11 @@
 #
 # This class provides the capability to manage non-Puppet PKI keys that are
 # hosted on the Puppet server. It requires keys to be managed under the PKI
-# module at modules/pki/files/keydist.
+# module at ${environment}/modules/pki/files/keydist.
 #
 # The keydist directory must have the following structure:
 #
-# /etc/puppet/keydist
+# ${environment}/modules/pki/files/keydist/
 #  - cacerts
 #    - Any X.509 PEM formatted CA certificates that you want to serve to your
 #      clients.
