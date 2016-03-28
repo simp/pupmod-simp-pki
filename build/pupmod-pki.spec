@@ -1,6 +1,6 @@
 Summary: PKI Puppet Module
 Name: pupmod-pki
-Version: 4.2.0
+Version: 4.2.1
 Release: 0
 License: Apache License, Version 2.0
 Group: Applications/System
@@ -24,17 +24,17 @@ all of your managed systems.
 
 %build
 
-%install
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 
 mkdir -p %{buildroot}/%{prefix}/pki
-mkdir -p %{buildroot}/%{prefix}/pki/files/keydist
-mkdir -p %{buildroot}/%{prefix}/pki/files/keydist/mcollective
 
-dirs='files lib manifests templates'
-for dir in $dirs; do
-  test -d $dir && cp -r $dir %{buildroot}/%{prefix}/pki
-done
+rm -rf .git
+rm -rf *.lock
+rm -rf spec/fixtures/modules
+
+curdir=`pwd`
+dirname=`basename $curdir`
+cp -r ../$dirname/* %{buildroot}/%{prefix}/pki
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -48,15 +48,16 @@ mkdir -p %{buildroot}/%{prefix}/pki
 %post
 #!/bin/sh
 
-if [ -d %{prefix}/pki/plugins ]; then
-  /bin/mv %{prefix}/pki/plugins %{prefix}/pki/plugins.bak
-fi
-
 %postun
 # Post uninstall stuff
 
 %changelog
-* Sat Mar 19 2016 Trevor Vaughan <tvaughan@onyxpoint.comm> - 4.2.0-0
+* Mon Mar 28 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.1-0
+- Removed extraneous cacerts keys
+- Updated the README
+- Fixed code comments
+
+* Sat Mar 19 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.0-0
 - Added the ability to copy from arbitrary OS locations for pki::copy. This was
   mainly to support stunnel.
 
