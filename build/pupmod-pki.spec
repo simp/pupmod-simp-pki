@@ -1,7 +1,7 @@
 Summary: PKI Puppet Module
 Name: pupmod-pki
 Version: 4.2.1
-Release: 0
+Release: 1
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -52,6 +52,9 @@ mkdir -p %{buildroot}/%{prefix}/pki
 # Post uninstall stuff
 
 %changelog
+* Tue Apr 12 2016 Kendall Moore <kendall.moore@onyxpoint.com> - 4.2.1-1
+- Removed custom type deprecation warning
+
 * Mon Mar 28 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.1-0
 - Removed extraneous cacerts keys
 - Updated the README
