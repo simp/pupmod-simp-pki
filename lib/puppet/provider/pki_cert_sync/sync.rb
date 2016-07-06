@@ -141,7 +141,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
       # a change for all those lovely legacy files out there. Should be
       # deprecated at some point since it's basically noise.
       FileUtils.touch('.sync_updated')
-      FileUtils.chmod(0000, '.sync_updated')
+      FileUtils.chmod(0644, '.sync_updated')
       # End garbage hacky code
 
       if !File.exists?("#{resource[:name]}/cacerts.pem")

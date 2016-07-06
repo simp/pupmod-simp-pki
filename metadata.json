@@ -1,6 +1,6 @@
 {
   "name":    "pupmod-simp-pki",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "author":  "simp",
   "summary": "Manages non-Puppet PKI keys and certificates",
   "license": "Apache-2.0",

@@ -1,57 +1,7 @@
-Summary: PKI Puppet Module
-Name: pupmod-pki
-Version: 4.2.2
-Release: 0
-License: Apache License, Version 2.0
-Group: Applications/System
-Source: %{name}-%{version}-%{release}.tar.gz
-Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Requires: pupmod-auditd >= 2.0.0-0
-Requires: puppet >= 3.7.4
-Requires: simp-bootstrap >= 4.2.0
-Buildarch: noarch
-Obsoletes: pupmod-pki-test >= 0.0.1
-Requires: pupmod-onyxpoint-compliance_markup
+* Wed Jul 06 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.3-0
+- Fixed a permissions flapping issue between a file resource and the 'sync'
+  provider.
 
-Prefix: %{_sysconfdir}/puppet/environments/simp/modules
-
-%description
-This Puppet module provides the ability to distribute and manage PKI keys for
-all of your managed systems.
-
-%prep
-%setup -q
-
-%build
-
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
-
-mkdir -p %{buildroot}/%{prefix}/pki
-
-rm -rf .git
-rm -rf *.lock
-rm -rf spec/fixtures/modules
-
-curdir=`pwd`
-dirname=`basename $curdir`
-cp -r ../$dirname/* %{buildroot}/%{prefix}/pki
-
-%clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
-
-mkdir -p %{buildroot}/%{prefix}/pki
-
-%files
-%defattr(0640,root,puppet,0750)
-%{prefix}/pki
-
-%post
-#!/bin/sh
-
-%postun
-# Post uninstall stuff
-
-%changelog
 * Tue Apr 12 2016 Kendall Moore <kendall.moore@onyxpoint.com> - 4.2.2-0
 - Removed custom type deprecation warning
 
