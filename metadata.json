@@ -1,5 +1,5 @@
 {
-  "name":    "pupmod-simp-pki",
+  "name":    "simp-pki",
   "version": "4.2.3",
   "author":  "simp",
   "summary": "Manages non-Puppet PKI keys and certificates",
