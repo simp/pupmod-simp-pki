@@ -1,9 +1,12 @@
----
-fixtures:
-  symlinks:
-    pki: "#{source_dir}"
-    auditd: "#{source_dir}/../auditd"
-    common: "#{source_dir}/../common"
-    concat: "#{source_dir}/../concat"
-    stdlib: "#{source_dir}/../stdlib"
-    augeasproviders : "#{source_dir}/../augeasproviders"
+--- 
+  fixtures: 
+    symlinks: 
+      auditd: "#{source_dir}/../auditd"
+      augeasproviders: "#{source_dir}/../augeasproviders"
+      augeasproviders_core: "#{source_dir}/../augeasproviders_core"
+      augeasproviders_grub: "#{source_dir}/../augeasproviders_grub"
+      compliance_markup: "#{source_dir}/../compliance_markup"
+      pki: "#{source_dir}"
+      simpcat: "#{source_dir}/../simpcat"
+      simplib: "#{source_dir}/../simplib"
+      stdlib: "#{source_dir}/../stdlib"
