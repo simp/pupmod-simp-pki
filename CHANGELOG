@@ -1,3 +1,7 @@
+* Mon Sep 26 2016 Nick Miller <nick.miller@onyxpoint.com> - 4.3.0-0
+- Added a feature to manage the PKCS#11 slot provided by the TPM
+- Also added a class that takes advantage of it
+
 * Wed Jul 06 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.3-0
 - Fixed a permissions flapping issue between a file resource and the 'sync'
   provider.

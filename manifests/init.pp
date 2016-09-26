@@ -49,6 +49,7 @@
 #
 class pki (
   $enable_audit = defined('$::enable_auditing') ? { true => $::enable_auditing, default => hiera('enable_auditing', true) },
+  $enable_pkcs11 = defined('$::enable_pkcs11') ? { true => $::enable_pkcs11, default => hiera('enable_pkcs11', true) },
   $sync_purge = true,
   $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
   $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
@@ -165,5 +166,9 @@ class pki (
     source => $ingress,
     tag    => 'firstrun',
     purge  => $sync_purge
+  }
+
+  if $enable_pkcs11 {
+    include '::pki::pkcs11'
   }
 }

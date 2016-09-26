@@ -11,6 +11,7 @@
     * [Setup requirements](#setup-requirements)
     * [Beginning with simp-pki](#beginning-with-simp-pki)
 3. [Usage - Configuration options and additional functionality](#usage)
+    * [Using the TPM PKCS#11 interface](#using_the_TPM_PKCS11_interface)
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
@@ -103,6 +104,15 @@ pki::copy { '/etc/httpd': }
 This will result in the directory `/etc/httpd/pki` being created with the
 `cacerts`, `public`, and `private` subdirectories as specified in the `keydist`
 directory.
+
+### Using the TPM PKCS#11 interface
+
+To enable this feature, add the `pki::pkcs11` class to your node and set the PINs in hiera:
+
+```yaml
+pki::pkcs11::so_pin: '12345678'
+pki::pkcs11::user_pin: '87654321'
+```
 
 ## Development
 
