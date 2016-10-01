@@ -1,24 +1,23 @@
 {
-  "name":    "simp-pki",
-  "version": "4.2.3",
-  "author":  "simp",
+  "name": "simp-pki",
+  "version": "4.2.4",
+  "author": "simp",
   "summary": "Manages non-Puppet PKI keys and certificates",
   "license": "Apache-2.0",
-  "source":  "https://github.com/simp/pupmod-simp-pki",
+  "source": "https://github.com/simp/pupmod-simp-pki",
   "project_page": "https://github.com/simp/pupmod-simp-pki",
-  "issues_url":   "https://simp-project.atlassian.net",
-  "tags": [ "simp", "pki" ],
+  "issues_url": "https://simp-project.atlassian.net",
+  "tags": [
+    "simp",
+    "pki"
+  ],
   "dependencies": [
-    {
-      "name": "simp/common",
-      "version_requirement": ">= 4.2.0"
-    },
     {
       "name": "simp/auditd",
       "version_requirement": ">= 4.1.0"
     },
     {
-      "name": "simp/concat",
+      "name": "simp/simpcat",
       "version_requirement": ">= 4.0.0"
     },
     {

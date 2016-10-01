@@ -1,3 +1,6 @@
+* Fri Sep 30 2016 Chris Tessmer <chris.tessmer@onyxpoint.com> - 4.2.4-0
+- Fixed dependencies in `metadata.json` prior to a Forge push.
+
 * Wed Jul 06 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.2.3-0
 - Fixed a permissions flapping issue between a file resource and the 'sync'
   provider.
