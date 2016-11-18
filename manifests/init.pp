@@ -61,7 +61,6 @@ class pki (
   validate_bool($sync_purge)
   validate_array($cacerts_sources)
 
-  compliance_map()
 
   # These are for reference by other modules and provide a consistent interface
   # for future updates.
