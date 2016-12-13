@@ -24,7 +24,7 @@
 #
 # [*source*]
 # Type: Absolute Path
-# Default: '/etc/pki'
+# Default: '/etc/pki/simp'
 #   The path to the PKI directory that you wish to copy. This should have the following structure:
 #     * <path>/cacerts
 #     * <path>/private
@@ -52,17 +52,13 @@
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define pki::copy (
-  $source = '/etc/pki',
-  $owner = 'root',
-  $group = 'root',
-  $use_simp_pki = defined('$::use_simp_pki') ? { true => $::use_simp_pki, default => hiera('use_simp_pki', true) }
+  Stdlib::Absolutepath  $source = '/etc/pki/simp',
+  String                $owner = 'root',
+  String                $group = 'root',
+  Boolean               $pki = simplib::lookup('simp_options::pki', { 'default_value' => false}),
 ) {
-  validate_absolute_path($source)
-  validate_string($owner)
-  validate_string($group)
-  validate_bool($use_simp_pki)
 
-  if $use_simp_pki {
+  if $pki {
     include '::pki'
 
     Class['pki'] -> Pki::Copy[$name]

@@ -19,7 +19,7 @@
 #
 # == Parameters
 #
-# [*enable_audit*]
+# [*auditd*]
 #  Type: Boolean
 #  Default: true
 #    Whether or not to enable auditing of the system keys.
@@ -48,23 +48,19 @@
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 class pki (
-  $enable_audit = defined('$::enable_auditing') ? { true => $::enable_auditing, default => hiera('enable_auditing', true) },
-  $sync_purge = true,
-  $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
-  $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
-  $cacerts_sources     = [
+  Boolean       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
+  Boolean       $sync_purge         = true,
+  String        $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
+  String        $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
+  Array[String] $cacerts_sources    = [
       'puppet:///modules/pki/keydist/cacerts',
       "puppet:///modules/pki/keydist/cacerts/${::fqdn}/cacerts"
   ]
 ) {
-  validate_bool($enable_audit)
-  validate_bool($sync_purge)
-  validate_array($cacerts_sources)
-
 
   # These are for reference by other modules and provide a consistent interface
   # for future updates.
-  $pki_dir         = '/etc/pki'
+  $pki_dir         = '/etc/pki/simp'
   $private_key_dir = "${pki_dir}/private"
   $public_key_dir  = "${pki_dir}/public"
   $private_key     = "${private_key_dir}/${::fqdn}.pem"
@@ -72,11 +68,7 @@ class pki (
   $cacerts         = "${pki_dir}/cacerts"
   $cacertfile      = "${pki_dir}/cacerts/cacerts.pem"
 
-  # For those that are pedantically aware...
-  $public_cert_dir = $public_key_dir
-  $public_cert     = $public_key
-
-  if $enable_audit {
+  if $auditd {
     include '::auditd'
 
     # Add audit rules for PKI key material
