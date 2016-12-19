@@ -52,13 +52,13 @@
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define pki::copy (
-  Stdlib::Absolutepath  $source = '/etc/pki/simp',
-  String                $owner = 'root',
-  String                $group = 'root',
-  Boolean               $pki = simplib::lookup('simp_options::pki', { 'default_value' => false}),
+  Stdlib::Absolutepath          $source = '/etc/pki/simp',
+  String                        $owner  = 'root',
+  String                        $group  = 'root',
+  Variant[Boolean,Enum['simp']] $pki    = simplib::lookup('simp_options::pki', { 'default_value' => false}),
 ) {
 
-  if $pki {
+  if $pki == 'simp' {
     include '::pki'
 
     Class['pki'] -> Pki::Copy[$name]
