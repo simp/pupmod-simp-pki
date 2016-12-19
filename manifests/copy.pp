@@ -42,17 +42,19 @@
 # Default: root
 #   The group of the directories/files that get copied.
 #
-# [*use_simp_pki*]
-# Type: Boolean
-# Default: true
-#   If true, use the SIMP PKI stack for certificate management.
+# [*pki*]
+# Type: Boolean or String
+# Default: false
+#
+# If set to 'simp' it will include the pki class to 
+# copy certs from the puppet server to $::pki::pki_dir
 #
 # == Authors
 #
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define pki::copy (
-  Stdlib::Absolutepath          $source = '/etc/pki/simp',
+  Stdlib::Absolutepath          $source = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
   String                        $owner  = 'root',
   String                        $group  = 'root',
   Variant[Boolean,Enum['simp']] $pki    = simplib::lookup('simp_options::pki', { 'default_value' => false}),

@@ -48,19 +48,19 @@
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 class pki (
-  Boolean       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
-  Boolean       $sync_purge         = true,
-  String        $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
-  String        $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
-  Array[String] $cacerts_sources    = [
-      'puppet:///modules/pki/keydist/cacerts',
-      "puppet:///modules/pki/keydist/cacerts/${::fqdn}/cacerts"
-  ]
+  Boolean              $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
+  Boolean              $sync_purge         = true,
+  String               $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
+  String               $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
+  Array[String]        $cacerts_sources    = [
+                                                'puppet:///modules/pki/keydist/cacerts',
+                                                "puppet:///modules/pki/keydist/cacerts/${::fqdn}/cacerts"
+                                             ]
 ) {
 
   # These are for reference by other modules and provide a consistent interface
   # for future updates.
-  $pki_dir         = '/etc/pki/simp'
+  $pki_dir         = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' })
   $private_key_dir = "${pki_dir}/private"
   $public_key_dir  = "${pki_dir}/public"
   $private_key     = "${private_key_dir}/${::fqdn}.pem"

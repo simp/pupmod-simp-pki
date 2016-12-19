@@ -10,7 +10,7 @@ describe 'pki::copy' do
         let(:params) {{ :source => "/foo/bar", :pki => true }}
 
         context 'with non-default source' do
-          it { is_expected.to contain_class('pki') }
+          it { is_expected.to_not contain_class('pki') }
           it { is_expected.to create_file('/test/dir/pki').with({
             :ensure => 'directory'})
           }
@@ -30,6 +30,10 @@ describe 'pki::copy' do
         context 'with pki=false' do
           let(:params) {{ :pki => false }}
           it { is_expected.to_not contain_class('pki') }
+        end
+        context 'with pki=simp' do
+          let(:params) {{ :pki => 'simp' }}
+          it { is_expected.to contain_class('pki') }
         end
       end
     end
