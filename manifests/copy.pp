@@ -24,7 +24,7 @@
 #
 # [*source*]
 # Type: Absolute Path
-# Default: '/etc/pki'
+# Default: '/etc/pki/simp'
 #   The path to the PKI directory that you wish to copy. This should have the following structure:
 #     * <path>/cacerts
 #     * <path>/private
@@ -42,27 +42,25 @@
 # Default: root
 #   The group of the directories/files that get copied.
 #
-# [*use_simp_pki*]
-# Type: Boolean
-# Default: true
-#   If true, use the SIMP PKI stack for certificate management.
+# [*pki*]
+# Type: Boolean or String
+# Default: false
+#
+# If set to 'simp' it will include the pki class to 
+# copy certs from the puppet server to $::pki::pki_dir
 #
 # == Authors
 #
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define pki::copy (
-  $source = '/etc/pki',
-  $owner = 'root',
-  $group = 'root',
-  $use_simp_pki = defined('$::use_simp_pki') ? { true => $::use_simp_pki, default => hiera('use_simp_pki', true) }
+  Stdlib::Absolutepath          $source = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
+  String                        $owner  = 'root',
+  String                        $group  = 'root',
+  Variant[Boolean,Enum['simp']] $pki    = simplib::lookup('simp_options::pki', { 'default_value' => false}),
 ) {
-  validate_absolute_path($source)
-  validate_string($owner)
-  validate_string($group)
-  validate_bool($use_simp_pki)
 
-  if $use_simp_pki {
+  if $pki == 'simp' {
     include '::pki'
 
     Class['pki'] -> Pki::Copy[$name]

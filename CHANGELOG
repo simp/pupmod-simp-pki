@@ -1,4 +1,9 @@
-* Wed Nov 23 2016 Jeanne Greulich <jgreulich.simp@onyxpoint.com> - 5.0.0-0
+* Tue Dec 13 2016 Jeanne Greulich <jgreulich.greulich@onyxpoint.com> - 6.0.0-0
+- Global catalyst updates
+- Strong Type updates
+- Changed default for pki directory to /etc/pki/simp from /etc/pki
+
+* Wed Nov 23 2016 Jeanne Greulich <jgreulich.greulich@onyxpoint.com> - 5.0.0-0
 - update requirement versions
 
 * Mon Nov 21 2016 Chris Tessmer <chris.tessmer@onyxpoint.com> - 5.0.0-0
