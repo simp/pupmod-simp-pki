@@ -52,10 +52,8 @@ class pki (
   Boolean              $sync_purge         = true,
   String               $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
   String               $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
-  Array[String]        $cacerts_sources    = [
-                                                'puppet:///modules/pki/keydist/cacerts',
-                                                "puppet:///modules/pki/keydist/cacerts/${::fqdn}/cacerts"
-                                             ]
+  Array[String]        $cacerts_sources    = ['puppet:///modules/pki/keydist/cacerts',
+                                              "puppet:///modules/pki/keydist/cacerts/${::fqdn}/cacerts"]
 ) {
 
   # These are for reference by other modules and provide a consistent interface
