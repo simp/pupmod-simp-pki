@@ -1,57 +1,41 @@
-# == Define: pki::copy
-#
-# This define provides a useful copy function for properly copying the entire
-# set of SIMP-based PKI certificates as deployed by the PKI module to a
+# This Defined Type provides a useful copy function for properly copying the
+# entire set of SIMP-based PKI certificates as deployed by the PKI module to a
 # different location.
 #
 # This is particularly important when dealing with SELinux enabled services
 # since they tend to react poorly to symlinks.
 #
-# == Parameters
+# @param name [Stdlib::Absolutepath]
+#   The path to the directory where the certificates will be housed
 #
-# [*name*]
-# Type: Absolute Path
-#   This is the path to the name directory where the certificates will be
-#   housed. You will need to ensure that all parent directories have been
-#   properly created.
+#   * You will need to ensure that all parent directories have been properly
+#     created
 #
-#   A 'pki' directory will be created under this space.
+#   * A 'pki' directory will be created under this space
+#       * For example, if you set this to ``/foo/bar`` then ``/foo/bar/pki``
+#         will be created
 #
-#   Example:
-#   $name = '/foo/bar'
+# @param source
+#   The path to the PKI directory that you wish to copy
 #
-#   Created directory => /foo/bar/pki
+#   * This must have the following structure:
+#       * ``<path>/cacerts``
+#       * ``<path>/private``
+#       * ``<path>/public``
 #
-# [*source*]
-# Type: Absolute Path
-# Default: '/etc/pki/simp'
-#   The path to the PKI directory that you wish to copy. This should have the following structure:
-#     * <path>/cacerts
-#     * <path>/private
-#     * <path>/public
+#   * **NOTE:** No other directories will be copied!
 #
-#   NOTE: No other directories will be copied!
+# @param owner
+#   The owner of the directories/files that get copied
 #
-# [*owner*]
-# Type: String
-# Default: root
-#   The owner of the directories/files that get copied.
+# @param group
+#   The group of the directories/files that get copied
 #
-# [*group*]
-# Type: String
-# Default: root
-#   The group of the directories/files that get copied.
+# @param pki
+#   If set to ``simp`` it will include the ``::pki`` class to copy certs from
+#   the puppet server to ``$::pki::pki_dir``
 #
-# [*pki*]
-# Type: Boolean or String
-# Default: false
-#
-# If set to 'simp' it will include the pki class to 
-# copy certs from the puppet server to $::pki::pki_dir
-#
-# == Authors
-#
-# * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define pki::copy (
   Stdlib::Absolutepath          $source = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
@@ -74,30 +58,33 @@ define pki::copy (
   }
 
   file { "${name}/pki/public":
-    ensure  => 'directory',
-    owner   => $owner,
-    group   => $group,
-    mode    => '0640',
-    recurse => true,
-    source  => "${source}/public"
+    ensure    => 'directory',
+    owner     => $owner,
+    group     => $group,
+    mode      => '0640',
+    recurse   => true,
+    source    => "${source}/public",
+    show_diff => false
   }
 
   file { "${name}/pki/private":
-    ensure  => 'directory',
-    owner   => $owner,
-    group   => $group,
-    mode    => '0640',
-    recurse => true,
-    source  => "${source}/private"
+    ensure    => 'directory',
+    owner     => $owner,
+    group     => $group,
+    mode      => '0640',
+    recurse   => true,
+    source    => "${source}/private",
+    show_diff => false
   }
 
   file { "${name}/pki/cacerts":
-    ensure  => 'directory',
-    owner   => $owner,
-    group   => $group,
-    mode    => '0640',
-    seltype => 'cert_t',
-    recurse => true,
-    source  => "${source}/cacerts"
+    ensure    => 'directory',
+    owner     => $owner,
+    group     => $group,
+    mode      => '0640',
+    seltype   => 'cert_t',
+    recurse   => true,
+    source    => "${source}/cacerts",
+    show_diff => false
   }
 }

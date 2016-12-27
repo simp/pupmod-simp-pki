@@ -40,11 +40,11 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
         hash_targets[cert_hash] ||= Array.new
 
         file_prefix,file_suffix = file.split('.')
-        if file_prefix == cert_hash then
+        if file_prefix == cert_hash
           hash_targets[cert_hash].insert(file_suffix.to_i,file)
         else
           i = 0
-          while not hash_targets[cert_hash][i].nil? do i += 1 end
+          while !hash_targets[cert_hash][i].nil? do i += 1 end
           hash_targets[cert_hash][i] = file
         end
       end
@@ -77,16 +77,16 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
       # If we're purging, and the number of files is different, then we're
       # not in sync.
       files = Dir.glob('**/*').select { |f| File.file?(f) }
-      if files.count != src.to_a.flatten.uniq.count and resource[:purge] == :true then
+      if files.count != src.to_a.flatten.uniq.count and resource[:purge] == :true
         Puppet.debug("Different number of files from #{resource[:source]} to #{resource[:name]}")
         insync = false
       end
 
       # If we're purging, and the number of directories is different, then we're
       # not in sync.
-      if resource[:purge] == :true then
+      if resource[:purge] == :true
         dirs = Dir.glob('**/*').select { |d| File.directory?(d) }
-        if not dirs.uniq.sort == @directories.uniq.sort then
+        unless dirs.uniq.sort == @directories.uniq.sort
           Puppet.debug("Different number of directories from #{resource[:source]} to #{resource[:name]}")
           insync = false
         end
@@ -95,7 +95,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
       # If files the same length, but we have a file name that is
       # different, then we're not in sync.
       src.each_key do |k|
-        if not files.include?(k) then
+        unless files.include?(k)
           Puppet.debug("Different filenames from #{resource[:source]} to #{resource[:name]}")
           insync = false
           break
@@ -107,7 +107,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
         next if file == 'cacerts.pem'
         # If we've gotten here, we need to exclude any target that doesn't
         # exist for the purge settings.
-        if File.file?(file) and file_diff(file,"#{resource[:source]}/#{file}") then
+        if File.file?(file) && file_diff(file,"#{resource[:source]}/#{file}")
           Puppet.debug("File contents differ between #{resource[:source]} and #{resource[:name]}")
           insync = false
           break
@@ -125,10 +125,10 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
     Dir.chdir(resource[:name]) do
 
       # Purge ALL THE THINGS
-      if resource[:purge] == :true then
+      if resource[:purge] == :true
         # Make sure not to delete directories or certs (and symlinks) that we might currently be using.
         (Dir.glob('**/*') - [@to_link.to_a].flatten - @directories.flatten).each do |to_purge|
-          if not ([@to_link.to_a].flatten).any? { |s| s.include?(to_purge) } then
+          unless ([@to_link.to_a].flatten).any? { |s| s.include?(to_purge) }
             Puppet.notice("Purging '#{resource[:name]}/#{to_purge}'")
             # Ensure the file still exists.  If a file's subdirectory was purged first
             # it won't be there.
@@ -159,7 +159,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
 
       # Now copy over those items that differ and link them.
       @to_link.each_pair do |src,link|
-        if File.exist?(src) then
+        if File.exist?(src)
           selinux_context = resource.get_selinux_current_context("#{resource[:name]}/#{src}")
         else
           selinux_context = resource.get_selinux_current_context("#{resource[:source]}/#{src}")
@@ -168,14 +168,14 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
         selinux_context.nil? and
           Puppet.debug("Could not get selinux context for '#{resource[:source]}/#{src}'")
 
-        unless src == 'cacerts.pem' then
+        unless src == 'cacerts.pem'
           FileUtils.cp("#{resource[:source]}/#{src}",src,{:preserve => true})
           resource.set_selinux_context("#{resource[:name]}/#{src}",selinux_context).nil? and
             Puppet.debug("Could not set selinux context on '#{src}'")
         end
 
         # Only link if the names are different.
-        if src != link then
+        if src != link
           FileUtils.ln_sf(src,link)
           # Have to set the SELinux context here too since symlinks can have
           # different contexts than files.
@@ -196,7 +196,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
   # Does a comparison of two files and returns true if they differ and false if
   # they do not.
   def file_diff(src, dest)
-    if not File.exist?(src) then
+    unless File.exist?(src)
       fail Puppet::Error,"Could not diff non-existant source file #{src}."
     end
 
@@ -212,7 +212,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
 
     retval = false
     while not s_file.eof? do
-      if s_file.read(512) != d_file.read(512) then
+      if s_file.read(512) != d_file.read(512)
         retval = true
         break
       end
