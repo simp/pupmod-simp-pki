@@ -1,3 +1,8 @@
+* Mon Dec 26 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.0-0
+- Changed pki::pki_dir parameter to pki::base_dir
+- Updated acceptance tests
+- Fixed bugs in ordering
+
 * Tue Dec 13 2016 Jeanne Greulich <jgreulich.greulich@onyxpoint.com> - 6.0.0-0
 - Global catalyst updates
 - Strong Type updates

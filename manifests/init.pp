@@ -1,70 +1,63 @@
-# == Class: pki
-#
 # This class provides the capability to manage non-Puppet PKI keys that are
 # hosted on the Puppet server. It requires keys to be managed under the PKI
 # module at ${environment}/modules/pki/files/keydist.
 #
 # The keydist directory must have the following structure:
 #
-# ${environment}/modules/pki/files/keydist/
-#  - cacerts
-#    - Any X.509 PEM formatted CA certificates that you want to serve to your
-#      clients.
-#  - <fqdn>
-#    - cacerts
-#      - Any X.509 PEM formatted CA certificates that you want to serve to this
-#        particular client.
-#    - <fqdn>.pem -> Host Private Key
-#    - <fqdn>.pub -> Host Public Key
+# * ${environment}/modules/pki/files/keydist/
+#     * cacerts
+#         * Any X.509 PEM formatted CA certificates that you want to serve to
+#           your clients.
+#     * <fqdn>
+#         * cacerts
+#             * Any X.509 PEM formatted CA certificates that you want to serve
+#               to this particular client.
+#         * <fqdn>.pem -> Host Private Key
+#         * <fqdn>.pub -> Host Public Key
 #
-# == Parameters
+# @param auditd
+#   Whether or not to enable auditing of the system keys
 #
-# [*auditd*]
-#  Type: Boolean
-#  Default: true
-#    Whether or not to enable auditing of the system keys.
+# @param sync_purge
+#   Whether or not the PKI sync type should purge the destination directory
 #
-# [*sync_purge*]
-#  Type: Boolean
-#  Default: true
-#    Whether or not the PKI sync type should purge the destination directory.
-#    If set to 'true' (the default), the /etc/pki/cacerts directory will have
-#    any non-recognized certificates removed.
+#   * If set to ``true`` (the default), the ``/etc/pki/cacerts`` directory
+#     will have any non-recognized certificates removed.
 #
-# [*private_key_source*]
-#  Type: String
-#  Default: puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem
-#    The source of the private key content. This parameter accepts the same
-#    values as the file type's source parameter.
+# @param private_key_source
+#   The source of the private key content
 #
-# [*public_key_source*]
-#  Type: String
-#  Default: puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem
-#    The source of the private key content. This parameter accepts the same
-#    values as the file type's source parameter.
+#   * This parameter accepts the same values as the ``file`` type's ``source``
+#     parameter
 #
-# == Authors
+# @param public_key_source
+#   The source of the private key content
 #
-# * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
+#   * This parameter accepts the same values as the ``file`` type's ``source``
+#     parameter
+#
+# @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 class pki (
+  Stdlib::Absolutepath $base               = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
+  String               $private_key_source = "puppet:///modules/#{module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pem",
+  String               $public_key_source  = "puppet:///modules/#{module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pub",
   Boolean              $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
   Boolean              $sync_purge         = true,
-  String               $private_key_source = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pem",
-  String               $public_key_source  = "puppet:///modules/pki/keydist/${::fqdn}/${::fqdn}.pub",
-  Array[String]        $cacerts_sources    = ['puppet:///modules/pki/keydist/cacerts',
-                                              "puppet:///modules/pki/keydist/cacerts/${::fqdn}/cacerts"]
+  Array[String]        $cacerts_sources    = [
+    'puppet:///modules/#{module_name}/keydist/cacerts',
+    "puppet:///modules/#{module_name}/keydist/cacerts/${facts['fqdn']}/cacerts"
+  ]
 ) {
 
   # These are for reference by other modules and provide a consistent interface
   # for future updates.
-  $pki_dir         = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' })
-  $private_key_dir = "${pki_dir}/private"
-  $public_key_dir  = "${pki_dir}/public"
-  $private_key     = "${private_key_dir}/${::fqdn}.pem"
-  $public_key      = "${public_key_dir}/${::fqdn}.pub"
-  $cacerts         = "${pki_dir}/cacerts"
-  $cacertfile      = "${pki_dir}/cacerts/cacerts.pem"
+  $private_key_dir = "${base}/private"
+  $public_key_dir  = "${base}/public"
+  $private_key     = "${private_key_dir}/${facts['fqdn']}.pem"
+  $public_key      = "${public_key_dir}/${facts['fqdn']}.pub"
+  $cacerts         = "${base}/cacerts"
+  $cacertfile      = "${base}/cacerts/cacerts.pem"
 
   if $auditd {
     include '::auditd'
@@ -72,15 +65,11 @@ class pki (
     # Add audit rules for PKI key material
 
     auditd::add_rules { 'pki':
-      content => "-w ${private_key_dir} -p wa -k PKI
--w ${public_key_dir} -p wa -k PKI
--w ${cacerts} -p wa -k PKI
--w ${private_key} -p wa -k PKI
--w ${public_key} -p wa -k PKI"
+      content => "-w ${base} -p wa -k PKI"
     }
   }
 
-  file { $pki_dir:
+  file { $base:
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
@@ -107,24 +96,26 @@ class pki (
   }
 
   file { $private_key:
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0440',
-    source => $private_key_source,
-    tag    => 'firstrun'
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0440',
+    source    => $private_key_source,
+    tag       => 'firstrun',
+    show_diff => false
   }
 
   file { $public_key:
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0444',
-    source => $public_key_source,
-    tag    => 'firstrun'
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0444',
+    source    => $public_key_source,
+    tag       => 'firstrun',
+    show_diff => false
   }
 
   # This is a temporary holding space for certs coming from the Puppet server.
   # The pki_cert_sync type will take care of placing them appropriately.
-  $ingress = "${pki_dir}/.cacerts_ingress"
+  $ingress = "${base}/.cacerts_ingress"
 
   file { $ingress:
     ensure       => 'directory',
@@ -137,7 +128,8 @@ class pki (
     seltype      => 'cert_t',
     source       => $cacerts_sources,
     sourceselect => 'all',
-    tag          => 'firstrun'
+    tag          => 'firstrun',
+    show_diff    => false
   }
 
   file { $cacerts:

@@ -27,12 +27,6 @@ Puppet::Type.newtype(:pki_cert_sync) do
     else
       self[:tag] = ['pki']
     end
-
-    if self[:notify] then
-      self[:notify] += ["File[#{self[:name]}]"]
-    else
-      self[:notify] = ["File[#{self[:name]}]"]
-    end
   end
 
   def finish
@@ -90,7 +84,10 @@ Puppet::Type.newtype(:pki_cert_sync) do
   end
 
   autorequire(:file) do
-    [ self[:name], self[:source] ]
+    [ self[:source] ]
   end
 
+  autonotify(:file) do
+    [ self[:name] ]
+  end
 end
