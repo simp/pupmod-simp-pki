@@ -101,6 +101,7 @@ class pki (
     mode      => '0440',
     source    => $private_key_source,
     tag       => 'firstrun',
+    seltype   => 'cert_t',
     show_diff => false
   }
 
@@ -110,6 +111,7 @@ class pki (
     mode      => '0444',
     source    => $public_key_source,
     tag       => 'firstrun',
+    seltype   => 'cert_t',
     show_diff => false
   }
 
