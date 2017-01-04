@@ -64,6 +64,7 @@ define pki::copy (
     mode      => '0640',
     recurse   => true,
     source    => "${source}/public",
+    seltype   => 'cert_t',
     show_diff => false
   }
 
@@ -74,6 +75,7 @@ define pki::copy (
     mode      => '0640',
     recurse   => true,
     source    => "${source}/private",
+    seltype   => 'cert_t',
     show_diff => false
   }
 
@@ -82,9 +84,9 @@ define pki::copy (
     owner     => $owner,
     group     => $group,
     mode      => '0640',
-    seltype   => 'cert_t',
     recurse   => true,
     source    => "${source}/cacerts",
+    seltype   => 'cert_t',
     show_diff => false
   }
 }
