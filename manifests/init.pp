@@ -45,7 +45,7 @@ class pki (
   Boolean              $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
   Boolean              $sync_purge         = true,
   Array[String]        $cacerts_sources    = [
-    'puppet:///modules/${module_name}/keydist/cacerts',
+    "puppet:///modules/${module_name}/keydist/cacerts",
     "puppet:///modules/${module_name}/keydist/cacerts/${facts['fqdn']}/cacerts"
   ]
 ) {
