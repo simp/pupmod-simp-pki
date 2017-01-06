@@ -12,7 +12,7 @@
 #
 #   * If $pki = false, this variable has no effect.
 #
-# @param source [Stdlib::Absolutepath]
+# @param source
 #   The path to the PKI directory that you wish to copy
 #
 #     * This must have the following structure:
@@ -22,7 +22,7 @@
 #
 #     * **NOTE:** No other directories will be copied!
 #
-# @param destination Optional[Stdlib::Absolutepath]
+# @param destination
 #   Optional. The destination that PKI certs get copied to.
 #
 #     * If $pki = false:
@@ -36,13 +36,13 @@
 #     * If $pki = true or 'simp':
 #       * This variable has no effect.
 #
-# @param owner [String]
+# @param owner
 #   The owner of the directories/files that get copied
 #
-# @param group [String]
+# @param group
 #   The group of the directories/files that get copied
 #
-# @param pki [Variant[Enum['simp'],Boolean]]
+# @param pki
 #
 #   * If set to ``simp`` or ``true``
 #     * Certificates will be centralized in /etc/pki/simp_apps/, and copied to
