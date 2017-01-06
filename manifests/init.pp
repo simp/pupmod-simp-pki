@@ -1,10 +1,10 @@
 # This class provides the capability to manage non-Puppet PKI keys that are
 # hosted on the Puppet server. It requires keys to be managed under the PKI
-# module at ${environment}/modules/pki/files/keydist.
+# module at ``${environment}/modules/pki/files/keydist``.
 #
 # The keydist directory must have the following structure:
 #
-# * ${environment}/modules/pki/files/keydist/
+# * ``${environment}/modules/pki/files/keydist/``
 #     * cacerts
 #         * Any X.509 PEM formatted CA certificates that you want to serve to
 #           your clients.
@@ -40,13 +40,13 @@
 #
 class pki (
   Stdlib::Absolutepath $base               = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
-  String               $private_key_source = "puppet:///modules/#{module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pem",
-  String               $public_key_source  = "puppet:///modules/#{module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pub",
+  String               $private_key_source = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pem",
+  String               $public_key_source  = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pub",
   Boolean              $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
   Boolean              $sync_purge         = true,
   Array[String]        $cacerts_sources    = [
-    'puppet:///modules/#{module_name}/keydist/cacerts',
-    "puppet:///modules/#{module_name}/keydist/cacerts/${facts['fqdn']}/cacerts"
+    "puppet:///modules/${module_name}/keydist/cacerts",
+    "puppet:///modules/${module_name}/keydist/cacerts/${facts['fqdn']}/cacerts"
   ]
 ) {
 

@@ -1,3 +1,9 @@
+* Thu Jan 05 2017 Nick Markowski <nmarkowski@keywcorp.com> - 6.0.0-0
+- We have made the decision to centralize application certificates
+  when simp is managing pki (simp_options::pki => true or 'simp').
+  This update re-tools pki::copy to better handle managing certs
+  in /etc/pki/simp_apps.
+
 * Mon Dec 26 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.0-0
 - Changed pki::pki_dir parameter to pki::base_dir
 - Updated acceptance tests

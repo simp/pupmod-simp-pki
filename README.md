@@ -54,7 +54,7 @@ If you find any issues, they can be submitted to our
 ### What simp-pki affects
 
 This module both adds your client X.509 PKI keys to the system at
-`/etc/pki/{cacerts,private,public}` and provides the ability to copy those
+`/etc/pki/simp/{cacerts,private,public}` and provides the ability to copy those
 certificates (or other certificates in the same directory format) into
 application spaces.
 
@@ -92,17 +92,61 @@ include '::pki'
 ```
 
 To copy the certificates into your application space, use the `pki::copy`
-define.
+define.  By default, the cert source is set to /etc/pki/simp. Three basic
+use-cases are described below.
 
-This will **automatically** include the simp-pki class unless told otherwise.
+If `$pki` is `true` or `simp`:
+- The simp-pki class will be included
+- Certificates will be centrally managed, in `/etc/pki/simp_apps`
+
+For example:
 
 ```
-pki::copy { '/etc/httpd': }
+pki::copy { 'httpd': }
 ```
 
-This will result in the directory `/etc/httpd/pki` being created with the
+This will result in the directory `/etc/pki/simp_apps/httpd/pki` being created with the
 `cacerts`, `public`, and `private` subdirectories as specified in the `keydist`
 directory.
+
+If `$pki` is false:
+- The simp-pki class will not be included
+- Certificates will not be centrally managed, and you must specify a `$destination`
+- You must ensure the parent directories of `$destination` exist
+
+For example:
+
+```
+pki::copy { 'httpd':
+  $pki         => false,
+  $destination => '/foo/bar'
+}
+```
+
+This will result in the directory `/foo/bar/pki` being created with the `cacerts`,
+`public`, and `private` subdirectories as specified in the `/etc/pki/simp` directory.
+
+To change the source of certificates to be distributed, use the global
+pki::source catalyst.
+- You must ensure the source directory contains the proper `cacerts`, `public`,
+  and `private` subdirectories, in the correct format. Nothing else will get
+  copied.
+
+In `some_hieradata.yaml`
+
+```
+simp_options::pki::source: /some/other/certs
+```
+
+In a manifest
+
+```
+pki::copy { 'httpd': }
+```
+
+This will result in the directory `/etc/pki/simp_apps/httpd/pki` being created with
+the `cacerts`, `public`, and `private` subdirectories as specified in the
+`/some/other/certs` directory.
 
 ## Development
 
