@@ -1,3 +1,7 @@
+* Mon Jan 09 2017 Nick Markowski <nmarkowski@keywcorp.com> - 6.0.0-0
+- Set perms on simp_apps to 644/755; apps were being denied access to
+  their own certs because they could not access /etc/pki/simp_apps.
+
 * Thu Jan 05 2017 Nick Markowski <nmarkowski@keywcorp.com> - 6.0.0-0
 - We have made the decision to centralize application certificates
   when simp is managing pki (simp_options::pki => true or 'simp').

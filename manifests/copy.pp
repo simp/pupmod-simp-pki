@@ -87,14 +87,14 @@ define pki::copy (
       'ensure' => 'directory',
       'owner'  => 'root',
       'group'  => 'root',
-      'mode'   => '0640'}
+      'mode'   => '0644'}
     )
 
     $_destination = "/etc/pki/simp_apps/${name}"
     file { $_destination:
       ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
+      owner  => $owner,
+      group  => $group,
       mode   => '0640'
     }
 
