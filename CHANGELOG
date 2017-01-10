@@ -1,3 +1,8 @@
+* Tue Jan 10 2017 Nick Miller <nick.miller@onyxpoint.com> - 6.0.0-0
+- Changed default location of keydist certs from the files directory of the pki
+  module unless $pki is set to 'simp', when it will pull from pki_files in a
+  different module path instead.
+
 * Mon Jan 09 2017 Nick Markowski <nmarkowski@keywcorp.com> - 6.0.0-0
 - Set perms on simp_apps to 644/755; apps were being denied access to
   their own certs because they could not access /etc/pki/simp_apps.
