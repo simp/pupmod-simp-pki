@@ -1,5 +1,5 @@
 * Wed Jan 11 2017 Nick Markowski <nmarkowski@keywcorp.com> - 6.0.0-0
-- SIMP certs are now managed in /etc/pki/simp/x509, and applicaition
+- SIMP certs are now managed in /etc/pki/simp/x509, and application
   certs in /etc/pki/simp_apps/<app_name>/x509.
 
 * Tue Jan 10 2017 Nick Miller <nick.miller@onyxpoint.com> - 6.0.0-0

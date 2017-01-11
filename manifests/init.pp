@@ -3,7 +3,7 @@
 #
 # The keydist directory must have the following structure:
 #
-# * ``${environment}/modules/#{module_name}/files/keydist/``
+# * ``${codedir}/${environment}/modules/#{module_name}/files/keydist/``
 #     * cacerts
 #         * Any X.509 PEM formatted CA certificates that you want to serve to
 #           your clients.
@@ -13,6 +13,11 @@
 #               to this particular client.
 #         * <fqdn>.pem -> Host Private Key
 #         * <fqdn>.pub -> Host Public Key
+#
+# If $pki is set to 'simp', the keydist directory will have the same structure,
+# however it will be located in a separate module path so keys don't get clobbered
+# when using r10k:
+# * ``/var/simp/environments/${environment}/site_files/pki_files/files/keydist``
 #
 # @param pki
 #   * If 'simp', certs will be copied from puppet:///modules/pki_files/keydist
@@ -43,7 +48,7 @@
 #   * If set to ``true`` (the default), the ``/etc/pki/cacerts`` directory
 #     will have any non-recognized certificates removed.
 #
-# @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class pki (
   Variant[Boolean,Enum['simp']] $pki                = simplib::lookup('simp_options::pki', { 'default_value' => 'simp' }),

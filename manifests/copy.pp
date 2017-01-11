@@ -54,7 +54,7 @@
 # @param group
 #   The group of the directories/files that get copied
 #
-# @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define pki::copy (
   Variant[Boolean,Enum['simp']]  $pki         = simplib::lookup('simp_options::pki', { 'default_value' => false}),

@@ -23,7 +23,7 @@ hosted on the Puppet server.
 The `keydist` directory must have the following structure:
 
 ```
-  Under ${environment}/modules/#{module_name}/files/keydist/
+  Under `${codedir}/${environment}/modules/#{module_name}/files/keydist/`:
   - cacerts
     - Any X.509 PEM formatted CA certificates that you want to serve to your
       clients. Do NOT hash these certificates. This will be done on the client
@@ -36,6 +36,11 @@ The `keydist` directory must have the following structure:
     - <fqdn>.pem -> Client Private Key
     - <fqdn>.pub -> Client Public Key
 ```
+
+If `$pki` is set to 'simp', the keydist directory will have the same structure,
+however it will be located in a separate module path so keys don't get clobbered
+when using r10k:
+* `/var/simp/environments/${environment}/site_files/pki_files/files/keydist`
 
 
 ### This is a SIMP module
