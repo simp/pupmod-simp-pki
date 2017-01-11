@@ -1,10 +1,9 @@
 # This class provides the capability to manage non-Puppet PKI keys that are
-# hosted on the Puppet server. It requires keys to be managed under the PKI
-# module at ``${environment}/modules/pki/files/keydist``.
+# hosted on the Puppet server.
 #
 # The keydist directory must have the following structure:
 #
-# * ``${environment}/modules/pki/files/keydist/``
+# * ``${environment}/modules/#{module_name}/files/keydist/``
 #     * cacerts
 #         * Any X.509 PEM formatted CA certificates that you want to serve to
 #           your clients.
@@ -15,14 +14,13 @@
 #         * <fqdn>.pem -> Host Private Key
 #         * <fqdn>.pub -> Host Public Key
 #
-# @param auditd
-#   Whether or not to enable auditing of the system keys
+# @param pki
+#   * If 'simp', certs will be copied from puppet:///modules/pki_files/keydist
 #
-# @param sync_purge
-#   Whether or not the PKI sync type should purge the destination directory
+#   * If true or false, certs will be copied from puppet:///modules/${module_name}/keydist
 #
-#   * If set to ``true`` (the default), the ``/etc/pki/cacerts`` directory
-#     will have any non-recognized certificates removed.
+# @param base
+#   The  directory to which certs will be copied.
 #
 # @param private_key_source
 #   The source of the private key content
@@ -36,11 +34,20 @@
 #   * This parameter accepts the same values as the ``file`` type's ``source``
 #     parameter
 #
+# @param auditd
+#   Whether or not to enable auditing of the system keys
+#
+# @param sync_purge
+#   Whether or not the PKI sync type should purge the destination directory
+#
+#   * If set to ``true`` (the default), the ``/etc/pki/cacerts`` directory
+#     will have any non-recognized certificates removed.
+#
 # @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 class pki (
   Variant[Boolean,Enum['simp']] $pki                = simplib::lookup('simp_options::pki', { 'default_value' => 'simp' }),
-  Stdlib::Absolutepath          $base               = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
+  Stdlib::Absolutepath          $base               = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
   String                        $private_key_source = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pem",
   String                        $public_key_source  = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pub",
   Boolean                       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
@@ -52,6 +59,15 @@ class pki (
 ) {
 
   if $pki == 'simp' {
+
+    file { '/etc/pki/simp':
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0655',
+      tag    => 'firstrun',
+    }
+
     $_private_key_source = "puppet:///modules/pki_files/keydist/${facts['fqdn']}/${facts['fqdn']}.pem"
     $_public_key_source  = "puppet:///modules/pki_files/keydist/${facts['fqdn']}/${facts['fqdn']}.pub"
     $_cacerts_sources    = [
@@ -78,18 +94,19 @@ class pki (
     include '::auditd'
 
     # Add audit rules for PKI key material
-
     auditd::add_rules { 'pki':
       content => "-w ${base} -p wa -k PKI"
     }
   }
 
+  $_base_require = $pki ? { 'simp' => File['/etc/pki/simp'], default => undef }
   file { $base:
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0655',
-    tag    => 'firstrun'
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0655',
+    tag     => 'firstrun',
+    require => $_base_require
   }
 
   file { $private_key_dir:

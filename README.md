@@ -18,13 +18,12 @@
 ## Description
 
 This module provides the capability to manage non-Puppet PKI keys that are
-hosted on the Puppet server. It requires keys to be managed under the PKI
-module at `${environmant}/modules/pki/files/keydist`.
+hosted on the Puppet server.
 
 The `keydist` directory must have the following structure:
 
 ```
-${environment}/modules/pki/files/keydist/
+  Under ${environment}/modules/#{module_name}/files/keydist/
   - cacerts
     - Any X.509 PEM formatted CA certificates that you want to serve to your
       clients. Do NOT hash these certificates. This will be done on the client
@@ -54,7 +53,7 @@ If you find any issues, they can be submitted to our
 ### What simp-pki affects
 
 This module both adds your client X.509 PKI keys to the system at
-`/etc/pki/simp/{cacerts,private,public}` and provides the ability to copy those
+`/etc/pki/simp/x509/{cacerts,private,public}` and provides the ability to copy those
 certificates (or other certificates in the same directory format) into
 application spaces.
 
@@ -105,7 +104,7 @@ For example:
 pki::copy { 'httpd': }
 ```
 
-This will result in the directory `/etc/pki/simp_apps/httpd/pki` being created with the
+This will result in the directory `/etc/pki/simp_apps/httpd/x509` being created with the
 `cacerts`, `public`, and `private` subdirectories as specified in the `keydist`
 directory.
 
@@ -124,7 +123,7 @@ pki::copy { 'httpd':
 ```
 
 This will result in the directory `/foo/bar/pki` being created with the `cacerts`,
-`public`, and `private` subdirectories as specified in the `/etc/pki/simp` directory.
+`public`, and `private` subdirectories as specified in the `/etc/pki/simp/x509` directory.
 
 To change the source of certificates to be distributed, use the global
 pki::source catalyst.
@@ -144,7 +143,7 @@ In a manifest
 pki::copy { 'httpd': }
 ```
 
-This will result in the directory `/etc/pki/simp_apps/httpd/pki` being created with
+This will result in the directory `/etc/pki/simp_apps/httpd/x509` being created with
 the `cacerts`, `public`, and `private` subdirectories as specified in the
 `/some/other/certs` directory.
 
