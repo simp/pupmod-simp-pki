@@ -39,16 +39,31 @@
 # @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 class pki (
-  Stdlib::Absolutepath $base               = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
-  String               $private_key_source = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pem",
-  String               $public_key_source  = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pub",
-  Boolean              $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
-  Boolean              $sync_purge         = true,
-  Array[String]        $cacerts_sources    = [
+  Variant[Boolean,Enum['simp']] $pki                = simplib::lookup('simp_options::pki', { 'default_value' => 'simp' }),
+  Stdlib::Absolutepath          $base               = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
+  String                        $private_key_source = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pem",
+  String                        $public_key_source  = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pub",
+  Boolean                       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
+  Boolean                       $sync_purge         = true,
+  Array[String]                 $cacerts_sources    = [
     "puppet:///modules/${module_name}/keydist/cacerts",
     "puppet:///modules/${module_name}/keydist/cacerts/${facts['fqdn']}/cacerts"
   ]
 ) {
+
+  if $pki == 'simp' {
+    $_private_key_source = "puppet:///modules/pki_files/keydist/${facts['fqdn']}/${facts['fqdn']}.pem"
+    $_public_key_source  = "puppet:///modules/pki_files/keydist/${facts['fqdn']}/${facts['fqdn']}.pub"
+    $_cacerts_sources    = [
+      'puppet:///modules/pki_files/keydist/cacerts',
+      "puppet:///modules/pki_files/keydist/cacerts/${facts['fqdn']}/cacerts"
+    ]
+  }
+  else {
+    $_private_key_source = $private_key_source
+    $_public_key_source  = $public_key_source
+    $_cacerts_sources    = $cacerts_sources
+  }
 
   # These are for reference by other modules and provide a consistent interface
   # for future updates.
@@ -99,7 +114,7 @@ class pki (
     owner     => 'root',
     group     => 'root',
     mode      => '0440',
-    source    => $private_key_source,
+    source    => $_private_key_source,
     tag       => 'firstrun',
     seltype   => 'cert_t',
     show_diff => false
@@ -109,7 +124,7 @@ class pki (
     owner     => 'root',
     group     => 'root',
     mode      => '0444',
-    source    => $public_key_source,
+    source    => $_public_key_source,
     tag       => 'firstrun',
     seltype   => 'cert_t',
     show_diff => false
@@ -128,7 +143,7 @@ class pki (
     purge        => true,
     force        => true,
     seltype      => 'cert_t',
-    source       => $cacerts_sources,
+    source       => $_cacerts_sources,
     sourceselect => 'all',
     tag          => 'firstrun',
     show_diff    => false
