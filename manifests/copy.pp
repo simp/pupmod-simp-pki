@@ -5,10 +5,22 @@
 # This is particularly important when dealing with SELinux enabled services
 # since they tend to react poorly to symlinks.
 #
+# @param pki
+#
+#   * If set to ``simp`` or ``true``
+#     * Certificates will be centralized in /etc/pki/simp_apps/, and copied to
+#       /etc/pki/simp_apps/$name/x509.
+#
+#   * If set to ``simp``
+#     * Include the ``::pki`` class
+#
+#   * If set to ``false``
+#     * Certificates will *not* be centralized, and you must provide a $destination
+#
 # @param name [Variant[String,Stdlib::Absolutepath]]
 #
 #   * If $pki = true or $pki = 'simp' this parameter will be used to namespace
-#     certificates in /etc/pki/simp_apps/$name.
+#     certificates in /etc/pki/simp_apps/$name/x509.
 #
 #   * If $pki = false, this variable has no effect.
 #
@@ -27,8 +39,8 @@
 #
 #     * If $pki = false:
 #       * You *must* specify $destination.
-#       * You will need to ensure that all parent directories have been properly
-#         created
+#       * You will need to ensure that all parent directories have been
+#         properly created.
 #       * A 'pki' directory will be created under this space
 #         * For example, if you set this to ``/foo/bar`` then ``/foo/bar/pki``
 #           will be created
@@ -42,26 +54,14 @@
 # @param group
 #   The group of the directories/files that get copied
 #
-# @param pki
-#
-#   * If set to ``simp`` or ``true``
-#     * Certificates will be centralized in /etc/pki/simp_apps/, and copied to
-#       /etc/pki/simp_apps/$name/pki.
-#
-#   * If set to ``simp``
-#     * Include the ``::pki`` class
-#
-#   * If set to ``false``
-#     * Certificates will *not* be centralized, and you must provide a $destination.
-#
-# @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define pki::copy (
-  Stdlib::Absolutepath           $source      = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp' }),
+  Variant[Boolean,Enum['simp']]  $pki         = simplib::lookup('simp_options::pki', { 'default_value' => false}),
+  Stdlib::Absolutepath           $source      = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
   Optional[Stdlib::Absolutepath] $destination = undef,
   String                         $owner       = 'root',
   String                         $group       = 'root',
-  Variant[Boolean,Enum['simp']]  $pki         = simplib::lookup('simp_options::pki', { 'default_value' => false}),
 ) {
 
   if !$pki {
@@ -69,7 +69,14 @@ define pki::copy (
       fail('You must specify a $destination if $pki false.')
     }
     else {
-      $_destination = $destination
+      $_destination = "${destination}/pki"
+
+      file { $_destination:
+        ensure => 'directory',
+        owner  => $owner,
+        group  => $group,
+        mode   => '0640',
+      }
     }
   }
   else {
@@ -78,6 +85,8 @@ define pki::copy (
         message => "Pki is managing cert destination. Ignoring specified destination ${destination}"
       }
     }
+
+    $_destination = "/etc/pki/simp_apps/${name}/x509"
 
     # Only ensure this directory exists if pki is true or 'simp'.
     # There is a reasonable expectation if users have pki globally
@@ -89,13 +98,19 @@ define pki::copy (
       'group'  => 'root',
       'mode'   => '0644'}
     )
-
-    $_destination = "/etc/pki/simp_apps/${name}"
+    file { "/etc/pki/simp_apps/${name}":
+      ensure  => 'directory',
+      owner   => $owner,
+      group   => $group,
+      mode    => '0640',
+      require => File['/etc/pki/simp_apps']
+    }
     file { $_destination:
-      ensure => 'directory',
-      owner  => $owner,
-      group  => $group,
-      mode   => '0640'
+      ensure  => 'directory',
+      owner   => $owner,
+      group   => $group,
+      mode    => '0640',
+      require => File["/etc/pki/simp_apps/${name}"]
     }
 
     if $pki == 'simp' {
@@ -104,14 +119,7 @@ define pki::copy (
     }
   }
 
-  file { "${_destination}/pki":
-    ensure => 'directory',
-    owner  => $owner,
-    group  => $group,
-    mode   => '0640'
-  }
-
-  file { "${_destination}/pki/public":
+  file { "${_destination}/public":
     ensure    => 'directory',
     owner     => $owner,
     group     => $group,
@@ -122,7 +130,7 @@ define pki::copy (
     show_diff => false
   }
 
-  file { "${_destination}/pki/private":
+  file { "${_destination}/private":
     ensure    => 'directory',
     owner     => $owner,
     group     => $group,
@@ -133,7 +141,7 @@ define pki::copy (
     show_diff => false
   }
 
-  file { "${_destination}/pki/cacerts":
+  file { "${_destination}/cacerts":
     ensure    => 'directory',
     owner     => $owner,
     group     => $group,

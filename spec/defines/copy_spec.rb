@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 shared_examples_for 'pki true' do
+  it { is_expected.to compile.with_all_deps }
   it { is_expected.to create_file('/etc/pki/simp_apps')}
   it { is_expected.to create_file('/etc/pki/simp_apps/foo')}
-  it { is_expected.to create_file('/etc/pki/simp_apps/foo/pki')}
-  it { is_expected.to create_file('/etc/pki/simp_apps/foo/pki/public').with(:source => '/etc/pki/simp/public')}
-  it { is_expected.to create_file('/etc/pki/simp_apps/foo/pki/private').with(:source => '/etc/pki/simp/private')}
-  it { is_expected.to create_file('/etc/pki/simp_apps/foo/pki/cacerts').with(:source => '/etc/pki/simp/cacerts')}
+  it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509')}
+  it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/public').with(:source => '/etc/pki/simp/x509/public')}
+  it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/private').with(:source => '/etc/pki/simp/x509/private')}
+  it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/cacerts').with(:source => '/etc/pki/simp/x509/cacerts')}
+  it { is_expected.to_not create_file('/etc/pki/simp_apps/foo/pki') }
 end
 
 describe 'pki::copy' do
@@ -24,9 +26,9 @@ describe 'pki::copy' do
           it { is_expected.to_not create_file('/etc/pki/simp_apps')}
           it { is_expected.to_not contain_class('pki') }
           it { is_expected.to create_file('/bar/baz/pki')}
-          it { is_expected.to create_file('/bar/baz/pki/public').with(:source => '/etc/pki/simp/public')}
-          it { is_expected.to create_file('/bar/baz/pki/private').with(:source => '/etc/pki/simp/private')}
-          it { is_expected.to create_file('/bar/baz/pki/cacerts').with(:source => '/etc/pki/simp/cacerts')}
+          it { is_expected.to create_file('/bar/baz/pki/public').with(:source => '/etc/pki/simp/x509/public')}
+          it { is_expected.to create_file('/bar/baz/pki/private').with(:source => '/etc/pki/simp/x509/private')}
+          it { is_expected.to create_file('/bar/baz/pki/cacerts').with(:source => '/etc/pki/simp/x509/cacerts')}
         end
 
         context 'with pki => false and specified destination and alternate source' do
@@ -48,15 +50,12 @@ describe 'pki::copy' do
 
         context 'with pki => true and no specified destination' do
           let(:params) {{:pki => true }}
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.to create_file('/etc/pki/simp_apps')}
           it { is_expected.to_not contain_class('pki') }
           it_should_behave_like "pki true"
         end
 
         context 'with pki => true and specified destination' do
           let(:params) {{:pki => true, :destination => '/bar/baz'}}
-          it { is_expected.to compile.with_all_deps }
           it { is_expected.to create_notify('pki_copy_foo') }
           it { is_expected.to_not contain_class('pki') }
           it_should_behave_like "pki true"
@@ -64,7 +63,6 @@ describe 'pki::copy' do
 
         context 'with pki => simp' do
           let(:params) {{:pki => 'simp'}}
-          it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_class('pki')}
           it_should_behave_like "pki true"
         end

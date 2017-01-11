@@ -28,12 +28,12 @@ describe 'pki_copy' do
 
       # If pki is true or simp, we will manage everything for you!
       it 'should plop the certs in a central place' do
-        on host, "test -f /etc/pki/simp_apps/someapp/pki/private/#{host_fqdn}.pem"
-        on host, "test -f /etc/pki/simp_apps/someapp/pki/public/#{host_fqdn}.pub"
-        on host, "test -f /etc/pki/simp_apps/someapp/pki/cacerts/cacerts.pem"
-        on host, "test -f /etc/pki/simp_apps/anotherapp/pki/private/#{host_fqdn}.pem"
-        on host, "test -f /etc/pki/simp_apps/anotherapp/pki/public/#{host_fqdn}.pub"
-        on host, "test -f /etc/pki/simp_apps/anotherapp/pki/cacerts/cacerts.pem"
+        on host, "test -f /etc/pki/simp_apps/someapp/x509/private/#{host_fqdn}.pem"
+        on host, "test -f /etc/pki/simp_apps/someapp/x509/public/#{host_fqdn}.pub"
+        on host, "test -f /etc/pki/simp_apps/someapp/x509/cacerts/cacerts.pem"
+        on host, "test -f /etc/pki/simp_apps/anotherapp/x509/private/#{host_fqdn}.pem"
+        on host, "test -f /etc/pki/simp_apps/anotherapp/x509/public/#{host_fqdn}.pub"
+        on host, "test -f /etc/pki/simp_apps/anotherapp/x509/cacerts/cacerts.pem"
       end
     end
     context 'with pki = false, and a destination specified' do

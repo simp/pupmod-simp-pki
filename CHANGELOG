@@ -1,3 +1,7 @@
+* Wed Jan 11 2017 Nick Markowski <nmarkowski@keywcorp.com> - 6.0.0-0
+- SIMP certs are now managed in /etc/pki/simp/x509, and application
+  certs in /etc/pki/simp_apps/<app_name>/x509.
+
 * Tue Jan 10 2017 Nick Miller <nick.miller@onyxpoint.com> - 6.0.0-0
 - Changed default location of keydist certs from the files directory of the pki
   module unless $pki is set to 'simp', when it will pull from pki_files in a
