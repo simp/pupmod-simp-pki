@@ -99,7 +99,7 @@ class pki (
     include '::auditd'
 
     # Add audit rules for PKI key material
-    auditd::add_rules { 'pki':
+    auditd::rule { 'pki':
       content => "-w ${base} -p wa -k PKI"
     }
   }
