@@ -13,32 +13,34 @@
     - rm -f Gemfile.lock
     - bundle install --no-binstubs --path .vendor "${FLAGS[@]}"
 
-.syntax_checks: &syntax_checks
+.validation_checks: &validation_checks
   script:
     - bundle exec rake syntax
     - bundle exec rake check:dot_underscore
     - bundle exec rake check:test_file
     - bundle exec rake pkg:check_version
     - bundle exec rake compare_latest_tag
+    - bundle exec rake lint
+    - bundle exec puppet module build
 
 .spec_tests: &spec_tests
   script:
     - bundle exec rake spec
 
 stages:
-  - syntax
+  - validation
   - unit
   - acceptance
   - deploy
 
-puppet-syntax:
-  stage: syntax
+puppet-validation:
+  stage: validation
   tags:
     - docker
   image: ruby:2.4
   <<: *cache_bundler
   <<: *setup_bundler_env
-  <<: *syntax_checks
+  <<: *validation_checks
 
 # Puppet 4
 unit-ruby-2.1.9:
@@ -62,8 +64,8 @@ unit-ruby-2.4.1:
 
 # For PE LTS Support
 # See: https://puppet.com/misc/puppet-enterprise-lifecycle
-puppet4.7-syntax:
-  stage: syntax
+puppet4.7-validation:
+  stage: validation
   tags:
     - docker
   image: ruby:2.1
@@ -71,7 +73,7 @@ puppet4.7-syntax:
     PUPPET_VERSION: '4.7'
   <<: *cache_bundler
   <<: *setup_bundler_env
-  <<: *syntax_checks
+  <<: *validation_checks
 
 unit-puppet4.7-ruby-2.1:
   stage: unit
@@ -84,8 +86,8 @@ unit-puppet4.7-ruby-2.1:
   <<: *setup_bundler_env
   <<: *spec_tests
 
-puppet5-syntax:
-  stage: syntax
+puppet5-validation:
+  stage: validation
   tags:
     - docker
   image: ruby:2.4
@@ -93,7 +95,7 @@ puppet5-syntax:
     PUPPET_VERSION: '5.0'
   <<: *cache_bundler
   <<: *setup_bundler_env
-  <<: *syntax_checks
+  <<: *validation_checks
 
 unit-puppet5-ruby-2.4:
   stage: unit
