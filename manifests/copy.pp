@@ -91,17 +91,17 @@ define pki::copy (
     $_destination = "${pki::copy::apps_dir::target}/${name}/x509"
 
     file { "${pki::copy::apps_dir::target}/${name}":
-      ensure  => 'directory',
-      owner   => $owner,
-      group   => $group,
-      mode    => '0640'
+      ensure => 'directory',
+      owner  => $owner,
+      group  => $group,
+      mode   => '0640'
     }
 
     file { $_destination:
-      ensure  => 'directory',
-      owner   => $owner,
-      group   => $group,
-      mode    => '0640'
+      ensure => 'directory',
+      owner  => $owner,
+      group  => $group,
+      mode   => '0640'
     }
 
     if $pki == 'simp' {
