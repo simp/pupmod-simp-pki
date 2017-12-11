@@ -2,7 +2,7 @@ require 'spec_helper'
 
 shared_examples_for 'pki true' do
   it { is_expected.to compile.with_all_deps }
-  it { is_expected.to create_file('/etc/pki/simp_apps')}
+  it { is_expected.to create_file('/etc/pki/simp_apps').with_purge(true) }
   it { is_expected.to create_file('/etc/pki/simp_apps/foo')}
   it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509')}
   it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/public').with(:source => '/etc/pki/simp/x509/public')}
@@ -23,7 +23,7 @@ describe 'pki::copy' do
           let(:params) {{:pki => false, :destination => '/bar/baz' }}
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to_not create_notify('pki_copy_foo') }
-          it { is_expected.to_not create_file('/etc/pki/simp_apps')}
+          it { is_expected.to create_file('/etc/pki/simp_apps').with_purge(true) }
           it { is_expected.to_not contain_class('pki') }
           it { is_expected.to create_file('/bar/baz/pki')}
           it { is_expected.to create_file('/bar/baz/pki/public').with(:source => '/etc/pki/simp/x509/public')}
