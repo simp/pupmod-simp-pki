@@ -26,7 +26,7 @@ before_install:
 
 jobs:
   include:
-    - stage: spec
+    - stage: validate
       rvm: 2.4.1
       env: STRICT_VARIABLES=yes TRUSTED_NODE_DATA=yes PUPPET_VERSION="~> 5"
       script:
