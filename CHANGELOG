@@ -1,3 +1,7 @@
+* Mon Dec 11 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.2-0
+- Ensure that /etc/pki/simp_apps is recursively purged so that old certificates
+  are not left on the system
+
 * Thu Jul 06 2017 Liz Nemsick <lnemsick.simp@gmail.com> - 6.0.1-0
 - Update puppet dependency and remove OBE pe dependency in metadata.json
 

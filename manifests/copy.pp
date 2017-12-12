@@ -64,6 +64,8 @@ define pki::copy (
   String                         $group       = 'root',
 ) {
 
+  include '::pki::copy::apps_dir'
+
   if !$pki {
     if !$destination {
       fail('You must specify a $destination if $pki false.')
@@ -86,31 +88,20 @@ define pki::copy (
       }
     }
 
-    $_destination = "/etc/pki/simp_apps/${name}/x509"
+    $_destination = "${pki::copy::apps_dir::target}/${name}/x509"
 
-    # Only ensure this directory exists if pki is true or 'simp'.
-    # There is a reasonable expectation if users have pki globally
-    # disabled, they do not intend to use this directory for cert
-    # centralization.
-    ensure_resource('file', '/etc/pki/simp_apps', {
-      'ensure' => 'directory',
-      'owner'  => 'root',
-      'group'  => 'root',
-      'mode'   => '0644'}
-    )
-    file { "/etc/pki/simp_apps/${name}":
-      ensure  => 'directory',
-      owner   => $owner,
-      group   => $group,
-      mode    => '0640',
-      require => File['/etc/pki/simp_apps']
+    file { "${pki::copy::apps_dir::target}/${name}":
+      ensure => 'directory',
+      owner  => $owner,
+      group  => $group,
+      mode   => '0640'
     }
+
     file { $_destination:
-      ensure  => 'directory',
-      owner   => $owner,
-      group   => $group,
-      mode    => '0640',
-      require => File["/etc/pki/simp_apps/${name}"]
+      ensure => 'directory',
+      owner  => $owner,
+      group  => $group,
+      mode   => '0640'
     }
 
     if $pki == 'simp' {
