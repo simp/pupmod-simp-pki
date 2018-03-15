@@ -53,18 +53,18 @@
 class pki (
   Variant[Boolean,Enum['simp']] $pki                = simplib::lookup('simp_options::pki', { 'default_value' => 'simp' }),
   Stdlib::Absolutepath          $base               = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
-  String                        $private_key_source = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pem",
-  String                        $public_key_source  = "puppet:///modules/${module_name}/keydist/${facts['fqdn']}/${facts['fqdn']}.pub",
+  String                        $certname           = pick($trusted['certname'], $facts['fqdn']),
+  String                        $private_key_source = "puppet:///modules/${module_name}/keydist/${certname}/${certname}.pem",
+  String                        $public_key_source  = "puppet:///modules/${module_name}/keydist/${certname}/${certname}.pub",
   Boolean                       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
   Boolean                       $sync_purge         = true,
   Array[String]                 $cacerts_sources    = [
     "puppet:///modules/${module_name}/keydist/cacerts",
-    "puppet:///modules/${module_name}/keydist/cacerts/${facts['fqdn']}/cacerts"
+    "puppet:///modules/${module_name}/keydist/cacerts/${certname}/cacerts"
   ]
 ) {
 
   if $pki == 'simp' {
-
     file { '/etc/pki/simp':
       ensure => 'directory',
       owner  => 'root',
@@ -73,11 +73,11 @@ class pki (
       tag    => 'firstrun',
     }
 
-    $_private_key_source = "puppet:///modules/pki_files/keydist/${facts['fqdn']}/${facts['fqdn']}.pem"
-    $_public_key_source  = "puppet:///modules/pki_files/keydist/${facts['fqdn']}/${facts['fqdn']}.pub"
+    $_private_key_source = "puppet:///modules/pki_files/keydist/${certname}/${certname}.pem"
+    $_public_key_source  = "puppet:///modules/pki_files/keydist/${certname}/${certname}.pub"
     $_cacerts_sources    = [
       'puppet:///modules/pki_files/keydist/cacerts',
-      "puppet:///modules/pki_files/keydist/cacerts/${facts['fqdn']}/cacerts"
+      "puppet:///modules/pki_files/keydist/cacerts/${certname}/cacerts"
     ]
   }
   else {
@@ -90,8 +90,8 @@ class pki (
   # for future updates.
   $private_key_dir = "${base}/private"
   $public_key_dir  = "${base}/public"
-  $private_key     = "${private_key_dir}/${facts['fqdn']}.pem"
-  $public_key      = "${public_key_dir}/${facts['fqdn']}.pub"
+  $private_key     = "${private_key_dir}/${certname}.pem"
+  $public_key      = "${public_key_dir}/${certname}.pub"
   $cacerts         = "${base}/cacerts"
   $cacertfile      = "${base}/cacerts/cacerts.pem"
 

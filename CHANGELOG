@@ -1,6 +1,9 @@
 * Mon Dec 11 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.2-0
 - Ensure that /etc/pki/simp_apps is recursively purged so that old certificates
   are not left on the system
+- Adds a new param, `$certname`, that controls the name of the certs in keydist
+  that will be copied over. This used to be set to `$facts['fqdn']` without an
+  option to change it, now it will default to `$trusted['certname']`
 
 * Thu Jul 06 2017 Liz Nemsick <lnemsick.simp@gmail.com> - 6.0.1-0
 - Update puppet dependency and remove OBE pe dependency in metadata.json
