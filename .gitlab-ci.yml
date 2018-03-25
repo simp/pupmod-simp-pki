@@ -155,7 +155,6 @@ pup5_3-unit:
   <<: *cache_bundler
   <<: *setup_bundler_env
   <<: *spec_tests
-  allow_failure: true
 
 
 # Keep an eye on the latest puppet 5
@@ -170,7 +169,6 @@ pup5_latest-validation:
   <<: *cache_bundler
   <<: *setup_bundler_env
   <<: *validation_checks
-  allow_failure: true
 
 pup5_latest-unit:
   stage: unit
@@ -182,7 +180,6 @@ pup5_latest-unit:
   <<: *cache_bundler
   <<: *setup_bundler_env
   <<: *spec_tests
-  allow_failure: true
 
 
 
@@ -210,3 +207,34 @@ fips-acceptance:
     BEAKER_fips: 'yes'
   script:
     - bundle exec rake beaker:suites[default]
+
+acceptance-puppet5-default:
+  stage: acceptance
+  tags:
+    - beaker
+  <<: *cache_bundler
+  <<: *setup_env_beaker
+  script:
+    - bundle exec rake beaker:suites[default,puppet5]
+
+acceptance-fips-puppet5-default:
+  stage: acceptance
+  tags:
+    - beaker
+  <<: *cache_bundler
+  <<: *setup_env_beaker
+  variables:
+    BEAKER_fips: 'yes'
+  script:
+    - bundle exec rake beaker:suites[default,puppet5]
+
+acceptance-oel-puppet5-default:
+  stage: acceptance
+  tags:
+    - beaker
+  <<: *cache_bundler
+  <<: *setup_env_beaker
+  variables:
+    PUPPET_VERSION: '5.4'
+  script:
+    - bundle exec rake beaker:suites[default,oel_p5]

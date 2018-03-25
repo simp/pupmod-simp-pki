@@ -1,3 +1,6 @@
+* Sat Mar 24 2018 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.2-0
+- Add support for OEL and Puppet 5
+
 * Mon Dec 11 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.2-0
 - Ensure that /etc/pki/simp_apps is recursively purged so that old certificates
   are not left on the system
