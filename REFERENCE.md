@@ -294,5 +294,3 @@ Valid values: `true`, `false`
 
 
 Default value: `true`
-
-
