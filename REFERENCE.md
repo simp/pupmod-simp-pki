@@ -110,7 +110,9 @@ Default value: `true`
 
 Data type: `Array[String]`
 
-Module path to look in for the CA certs
+Modulepath to look in for the CA certs. Normally this is a special
+modulepath outside of the normal $codedir. The full path can be found
+in the `environment.conf` or through `puppet config print modulepath`
 
 Default value: [
     "puppet:///modules/${module_name}/keydist/cacerts",
