@@ -197,9 +197,10 @@ default:
   variables:
     PUPPET_VERSION: '4.10'
   script:
+    - bundle exec rake spec_clean
     - bundle exec rake beaker:suites[default]
 
-fips:
+default-fips:
   stage: acceptance
   tags:
     - beaker
@@ -209,4 +210,5 @@ fips:
     PUPPET_VERSION: '4.10'
     BEAKER_fips: 'yes'
   script:
+    - bundle exec rake spec_clean
     - bundle exec rake beaker:suites[default]
