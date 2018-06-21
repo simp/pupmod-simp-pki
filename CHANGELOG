@@ -1,6 +1,7 @@
 * Mon Apr 16 2018 Nick Miller <nick.miller@onyxpoint.com> - 6.0.3-0
 - pki::copy's source parameter now accepts any string to allow for use of NSS
   and remote file sources.
+- Cleanup unneeded fixtures
 
 * Mon Dec 11 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.2-0
 - Ensure that /etc/pki/simp_apps is recursively purged so that old certificates
