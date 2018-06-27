@@ -2,6 +2,7 @@
 - pki::copy's source parameter now accepts any string to allow for use of NSS
   and remote file sources.
 - Cleanup unneeded fixtures
+- Update version range of auditd dependency in metadata.json
 
 * Mon Dec 11 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.2-0
 - Ensure that /etc/pki/simp_apps is recursively purged so that old certificates
