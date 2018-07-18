@@ -1,6 +1,6 @@
 {
   "name": "simp-pki",
-  "version": "6.0.2",
+  "version": "6.0.4",
   "author": "SIMP Team",
   "summary": "Manages non-Puppet PKI keys and certificates",
   "license": "Apache-2.0",
@@ -17,7 +17,7 @@
   "dependencies": [
     {
       "name": "simp/auditd",
-      "version_requirement": ">= 7.0.0 < 8.0.0"
+      "version_requirement": ">= 7.0.0 < 9.0.0"
     },
     {
       "name": "puppetlabs/stdlib",

@@ -4,15 +4,15 @@
 # The keydist directory must have the following structure:
 #
 # * ``${codedir}/${environment}/modules/#{module_name}/files/keydist/``
-#     * cacerts
+#     * ``cacerts``
 #         * Any X.509 PEM formatted CA certificates that you want to serve to
 #           your clients.
-#     * <fqdn>
-#         * cacerts
+#     * ``<fqdn>``
+#         * ``cacerts``
 #             * Any X.509 PEM formatted CA certificates that you want to serve
 #               to this particular client.
-#         * <fqdn>.pem -> Host Private Key
-#         * <fqdn>.pub -> Host Public Key
+#         * ``<fqdn>.pem`` -> Host Private Key
+#         * ``<fqdn>.pub`` -> Host Public Key
 #
 # If $pki is set to 'simp', the keydist directory will have the same structure,
 # however it will be located in a separate module path so keys don't get clobbered
@@ -20,12 +20,17 @@
 # * ``/var/simp/environments/${environment}/site_files/pki_files/files/keydist``
 #
 # @param pki
-#   * If 'simp', certs will be copied from puppet:///modules/pki_files/keydist
+#   * If 'simp', certs will be copied from ``puppet:///modules/pki_files/keydist``
 #
-#   * If true or false, certs will be copied from puppet:///modules/${module_name}/keydist
+#   * If true or false, certs will be copied from ``puppet:///modules/${module_name}/keydist``
 #
 # @param base
 #   The  directory to which certs will be copied.
+#
+# @param certname
+#   The name of the cert to be used on this host
+#
+#   Defaults to the Puppet certname.
 #
 # @param private_key_source
 #   The source of the private key content
@@ -47,6 +52,11 @@
 #
 #   * If set to ``true`` (the default), the ``/etc/pki/cacerts`` directory
 #     will have any non-recognized certificates removed.
+#
+# @param cacerts_sources
+#   Modulepath to look in for the CA certs. Normally this is a special
+#   modulepath outside of the normal $codedir. The full path can be found
+#   in the ``environment.conf`` or through ``puppet config print modulepath``
 #
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #

@@ -9,35 +9,40 @@
 #
 #   * If set to ``simp`` or ``true``
 #     * Certificates will be centralized in /etc/pki/simp_apps/, and copied to
-#       /etc/pki/simp_apps/$name/x509.
+#       ``/etc/pki/simp_apps/$name/x509``.
 #
 #   * If set to ``simp``
-#     * Include the ``::pki`` class
+#     * Include the ``pki`` class
 #
 #   * If set to ``false``
-#     * Certificates will *not* be centralized, and you must provide a $destination
+#     * Certificates will *not* be centralized, and you must provide a ``$destination``
 #
 # @param name [Variant[String,Stdlib::Absolutepath]]
 #
-#   * If $pki = true or $pki = 'simp' this parameter will be used to namespace
-#     certificates in /etc/pki/simp_apps/$name/x509.
+#   * If ``$pki = true`` or ``$pki = 'simp'`` this parameter will be used to namespace
+#     certificates in ``/etc/pki/simp_apps/$name/x509``.
 #
-#   * If $pki = false, this variable has no effect.
+#   * If ``$pki = false``, this variable has no effect.
 #
 # @param source
-#   The path to the PKI directory that you wish to copy
+#   Where to find the certificates. This value could be one of a few types:
+#     * Absolute path
+#     * A file URL in the form of ``(https|puppet):///file/path``. See the ``file``
+#       resource documentation for details on the format of this URL
+#     * An NSS database. This must be managed by something else, like IPA.
 #
-#     * This must have the following structure:
-#         * ``<path>/cacerts``
-#         * ``<path>/private``
-#         * ``<path>/public``
+#   If the setting is a path (file or URL), the locations referenced must have
+#   the following structure:
+#     * ``<path>/cacerts``
+#     * ``<path>/private``
+#     * ``<path>/public``
 #
 #     * **NOTE:** No other directories will be copied!
 #
 # @param destination
 #   Optional. The destination that PKI certs get copied to.
 #
-#     * If $pki = false:
+#     * If ``$pki = false``:
 #       * You *must* specify $destination.
 #       * You will need to ensure that all parent directories have been
 #         properly created.
@@ -45,7 +50,7 @@
 #         * For example, if you set this to ``/foo/bar`` then ``/foo/bar/pki``
 #           will be created
 #
-#     * If $pki = true or 'simp':
+#     * If ``$pki = true`` or ``$pki = 'simp'``:
 #       * This variable has no effect.
 #
 # @param owner
@@ -58,7 +63,7 @@
 #
 define pki::copy (
   Variant[Boolean,Enum['simp']]  $pki         = simplib::lookup('simp_options::pki', { 'default_value' => false}),
-  Stdlib::Absolutepath           $source      = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
+  String                         $source      = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
   Optional[Stdlib::Absolutepath] $destination = undef,
   String                         $owner       = 'root',
   String                         $group       = 'root',
