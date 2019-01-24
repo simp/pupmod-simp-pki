@@ -76,7 +76,7 @@ Puppet share.
 The following is the recommended addition to `auth.conf` for realizing this share:
 
 ```
-# Everyone gets access to the cacerts and mcollective
+# Everyone gets access to the cacerts
 path ~ ^/file_(metadata|content)/modules/pki/keydist/cacerts
 allow *
 
