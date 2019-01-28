@@ -58,7 +58,7 @@
 #   modulepath outside of the normal $codedir. The full path can be found
 #   in the ``environment.conf`` or through ``puppet config print modulepath``
 #
-# @author Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author https://github.com/simp/pupmod-simp-pki/graphs/contributors
 #
 class pki (
   Variant[Boolean,Enum['simp']] $pki                = simplib::lookup('simp_options::pki', { 'default_value' => 'simp' }),
@@ -98,12 +98,13 @@ class pki (
 
   # These are for reference by other modules and provide a consistent interface
   # for future updates.
-  $private_key_dir = "${base}/private"
-  $public_key_dir  = "${base}/public"
-  $private_key     = "${private_key_dir}/${certname}.pem"
-  $public_key      = "${public_key_dir}/${certname}.pub"
-  $cacerts         = "${base}/cacerts"
-  $cacertfile      = "${base}/cacerts/cacerts.pem"
+  $private_key_dir     = "${base}/private"
+  $public_key_dir      = "${base}/public"
+  $private_key         = "${private_key_dir}/${certname}.pem"
+  $public_key          = "${public_key_dir}/${certname}.pub"
+  $cacerts             = "${base}/cacerts"
+  $cacertfile          = "${base}/cacerts/cacerts.pem"
+  $cacert_no_hdrs_file = "${base}/cacerts/cacerts_no_headers.pem"
 
   if $auditd {
     include '::auditd'
