@@ -4,6 +4,8 @@
   in addition to the existing aggregate CA certificates file,
   cacerts.pem. This new CA certificates file is useful for
   application that cannot handle certificate headers.
+- Update the upper bound of stdlib to < 6.0.0
+- Update a URL in the README.md
 
 * Fri Sep 07 2018 Liz Nemsick <lnemsick.simp@gmail.com> - 6.0.4-0
 - Drop Hiera 4 support
