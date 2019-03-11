@@ -4,6 +4,11 @@
   in addition to the existing aggregate CA certificates file,
   cacerts.pem. This new CA certificates file is useful for
   application that cannot handle certificate headers.
+- Add a pki_cert_sync option, ``generate_pem_hash_links``, which controls
+  whether pki_cert_sync should generate and maintain the PEM file hash
+  links in the target directory. Disabling automatic PEM hash link
+  generation is useful if an application is managing those links
+  in the target directory, itself.
 - Update the upper bound of stdlib to < 6.0.0
 - Update a URL in the README.md
 
