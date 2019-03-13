@@ -14,18 +14,21 @@ describe "#{pki_cert_sync_type}" do
       } )
       expect(resource[:name]).to eq('/etc/pki/simp_apps/app1/x509/cacerts')
       expect(resource[:source]).to eq('/etc/pki/simp/x509/cacerts')
+      expect(resource.generate_pem_hash_links?).to eq(true)
       expect(resource.purge?).to eq(true)
       expect(resource[:tag]).to eq(['pki'])
     end
 
     it 'should set optional parameters' do
       resource = pki_cert_sync_type.new( {
-        :name                  => '/etc/pki/simp_apps/app1/x509/cacerts',
-        :source                => '/etc/pki/simp/x509/cacerts',
-        :purge                 => false
+        :name                    => '/etc/pki/simp_apps/app1/x509/cacerts',
+        :source                  => '/etc/pki/simp/x509/cacerts',
+        :generate_pem_hash_links => false,
+        :purge                   => false
       } )
       expect(resource[:name]).to eq('/etc/pki/simp_apps/app1/x509/cacerts')
       expect(resource[:source]).to eq('/etc/pki/simp/x509/cacerts')
+      expect(resource.generate_pem_hash_links?).to be_falsey
       expect(resource.purge?).to be_falsey
       expect(resource[:tag]).to eq(['pki'])
     end

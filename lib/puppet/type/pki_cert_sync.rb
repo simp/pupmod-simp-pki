@@ -52,6 +52,16 @@ Puppet::Type.newtype(:pki_cert_sync) do
     end
   end
 
+  newparam(:generate_pem_hash_links, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+    desc = <<-EOM
+      Whether to generate the PEM file hash links in the target directory
+      (:name).  Should only be disabled if the application using the target
+      directory generates those links itself.
+    EOM
+
+    defaultto true
+  end
+
   newparam(:purge, :boolean => true, :parent => Puppet::Parameter::Boolean) do
     desc = <<-EOM
       Whether to purge the target directory (:name). In general, you
