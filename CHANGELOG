@@ -1,3 +1,9 @@
+* Fri Jan 25 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 6.1.1-0
+- Moved temporary aggregate CA certs reference files used by
+  pki_cert_sync out of the target directory. These temporary
+  files were being erroneously processed by the gitlab
+  application.
+
 * Fri Jan 25 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 6.1.0-0
 - pki_cert_sync type now generates an aggregate CA certificates
   with X.509 certificate headers removed, cacerts_no_headers.pem,

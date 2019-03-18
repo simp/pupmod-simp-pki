@@ -57,10 +57,6 @@ def validate_cert_dir(dir, cert_info, cacerts_file, cacerts_no_hdrs_file, link_s
   # verify aggregate CA certs files
   expect( IO.read(File.join(dir, 'cacerts.pem')) ).to eq IO.read(cacerts_file)
   expect( IO.read(File.join(dir, 'cacerts_no_headers.pem')) ).to eq IO.read(cacerts_no_hdrs_file)
-
-  # verify temporary state files have been removed
-  expect( File.exist?(File.join(dir, '.cacerts.pem')) ).to be false
-  expect( File.exist?(File.join(dir, '.cacerts_no_headers.pem')) ).to be false
 end
 
 # exercise default provider and verify results
@@ -557,20 +553,22 @@ describe provider_class do
           expect( provider.source_insync?(its, @target_dir) ).to eq false
         end
 
-        it 'should handle missing reference cacert file gracefully' do
-          populate_source_dir(@source_dir, cert_info)
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-            :name     => @target_dir,
-            :source   => @source_dir,
-            :provider => 'redhat'
-          })
-          provider = resource.provider
+        ['cacerts.pem', 'cacerts_no_headers.pem'].each do |cacert_file|
+        it "should handle missing reference #{cacert_file} gracefully" do
+            populate_source_dir(@source_dir, cert_info)
+            resource = Puppet::Type.type(:pki_cert_sync).new({
+              :name     => @target_dir,
+              :source   => @source_dir,
+              :provider => 'redhat'
+            })
+            provider = resource.provider
 
-          its = provider.source
-          FileUtils.rm(File.join(@target_dir, '.cacerts.pem'))
+            its = provider.source
+            FileUtils.rm(provider.ref_file(cacert_file))
 
-          # really checking that this does not throw an exception
-          expect( provider.source_insync?(its, @target_dir) ).to eq false
+            # really checking that this does not throw an exception
+            expect( provider.source_insync?(its, @target_dir) ).to eq false
+          end
         end
       end
 
@@ -587,23 +585,6 @@ describe provider_class do
           its = provider.source
           expect( provider.source_insync?(its, @target_dir) ).to eq false
           FileUtils.rm(File.join(@source_dir, File.basename(cert1_file)))
-
-          # really checking that this does not throw an exception
-          provider.source = @target_dir
-        end
-
-        it 'should handle missing reference cacert file gracefully' do
-          populate_source_dir(@source_dir, cert_info)
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-            :name     => @target_dir,
-            :source   => @source_dir,
-            :provider => 'redhat'
-          })
-          provider = resource.provider
-
-          its = provider.source
-          expect( provider.source_insync?(its, @target_dir) ).to eq false
-          FileUtils.rm(File.join(@target_dir, '.cacerts.pem'))
 
           # really checking that this does not throw an exception
           provider.source = @target_dir
