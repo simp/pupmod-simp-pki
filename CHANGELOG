@@ -1,5 +1,7 @@
-* Fri Aug 02 2019 Robert Vincent <pillarsdotnet@gmail.com> - 6.1.2-0
-- Support puppetlabs/stdlib 6.x and puppet 6.x.
+* Fri Aug 02 2019 Robert Vincent <pillarsdotnet@gmail.com> - 6.2.0-0
+- Drop Puppet 4 support
+- Add Puppet 6 support
+- Add puppetlabs-stdlib 6 support
 
 * Fri Jan 25 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 6.1.1-0
 - Moved temporary aggregate CA certs reference files used by
