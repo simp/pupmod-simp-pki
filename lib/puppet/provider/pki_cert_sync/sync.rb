@@ -1,4 +1,7 @@
 Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
+  desc <<-EOM
+    Synchronizes certificates across the local system.
+  EOM
 
   def initialize(args)
     super(args)
@@ -42,7 +45,6 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
   #
   def source
     src_dir = resource[:source]
-    target_dir = resource[:name]
     File.directory?(src_dir) or fail Puppet::Error, "'#{src_dir}' is not a valid directory."
 
     @to_link = {}

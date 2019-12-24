@@ -7,21 +7,23 @@
 -%>
 HOSTS:
   el6:
-    roles:
-      - default
-      - master
-      - client
     platform:   el-6-x86_64
     box:        centos/6
     hypervisor: <%= hypervisor %>
 
   el7:
     roles:
-      - client
+      - default
     platform: el-7-x86_64
     box: centos/7
     hypervisor: <%= hypervisor %>
 
+  el8:
+    platform: el-8-x86_64
+    box: centos/8
+    hypervisor: <%= hypervisor %>
+
+CONFIG:
 CONFIG:
   log_level: verbose
   type: aio
