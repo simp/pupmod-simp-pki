@@ -107,7 +107,9 @@ class pki (
   $cacert_no_hdrs_file = "${base}/cacerts/cacerts_no_headers.pem"
 
   if $auditd {
-    include '::auditd'
+    simplib::assert_optional_dependency($module_name, 'simp/auditd')
+
+    include 'auditd'
 
     # Add audit rules for PKI key material
     auditd::rule { 'pki':

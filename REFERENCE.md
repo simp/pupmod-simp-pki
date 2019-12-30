@@ -277,7 +277,7 @@ The following properties are available in the `pki_cert_sync` type.
 
 ##### `source`
 
-
+The directory from which to copy all materials.
 
 #### Parameters
 
@@ -287,13 +287,30 @@ The following parameters are available in the `pki_cert_sync` type.
 
 namevar
 
+The target directory into which to place and hash the X.509
+certificates.
 
+This directory will be left as it was found at the end of the sync just
+in case it is the destination of a recursive file copy with purge
+enabled.
+
+##### `generate_pem_hash_links`
+
+Valid values: `true`, `false`, yes, no
+
+Whether to generate the PEM file hash links in the target directory
+(:name).  Should only be disabled if the application using the target
+directory generates those links itself.
+
+Default value: `true`
 
 ##### `purge`
 
-Valid values: `true`, `false`
+Valid values: `true`, `false`, yes, no
 
-
+Whether to purge the target directory (:name). In general, you
+will want to do this to ensure that systems do not get inappropriate
+CAs added locally.
 
 Default value: `true`
 
