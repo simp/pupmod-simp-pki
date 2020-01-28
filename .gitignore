@@ -11,6 +11,7 @@ spec/rp_env/
 .vagrant/
 .bundle/
 Gemfile.lock
+sec_results/
 vendor/
 junit/
 log/
