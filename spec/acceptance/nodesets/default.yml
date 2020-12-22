@@ -6,11 +6,6 @@
   end
 -%>
 HOSTS:
-  el6:
-    platform:   el-6-x86_64
-    box:        centos/6
-    hypervisor: <%= hypervisor %>
-
   el7:
     roles:
       - default
