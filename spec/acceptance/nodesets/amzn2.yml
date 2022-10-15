@@ -6,23 +6,17 @@
   end
 -%>
 HOSTS:
-  el7:
+  amzn:
     roles:
       - default
     platform: el-7-x86_64
-    box: centos/7
+    box: gbailey/amzn2
     hypervisor: <%= hypervisor %>
 
-  el8:
-    platform: el-8-x86_64
-    box: generic/centos8s
-    hypervisor: <%= hypervisor %>
-
-CONFIG:
 CONFIG:
   log_level: verbose
-  vagrant_cpus: 2
   type: aio
-<% if ENV['BEAKER_PUPPET_ENVIRONMENT'] -%>
-  puppet_environment: <%= ENV['BEAKER_PUPPET_ENVIRONMENT'] %>
+  vagrant_cpus: 2
+<% if ENV['BEAKER_PUPPET_COLLECTION'] -%>
+  puppet_collection: <%= ENV['BEAKER_PUPPET_COLLECTION'] %>
 <% end -%>
