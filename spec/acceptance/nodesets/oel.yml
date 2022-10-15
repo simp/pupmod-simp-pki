@@ -15,12 +15,13 @@ HOSTS:
 
   oel8:
     platform:   el-8-x86_64
-    box:        generic/centos8
+    box:        generic/oracle8
     hypervisor: <%= hypervisor %>
 
 CONFIG:
   log_level: verbose
   type: aio
+  vagrant_cpus: 2
 <% if ENV['BEAKER_PUPPET_ENVIRONMENT'] -%>
   puppet_environment: <%= ENV['BEAKER_PUPPET_ENVIRONMENT'] %>
 <% end -%>

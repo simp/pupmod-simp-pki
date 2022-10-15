@@ -1,3 +1,6 @@
+* Sat Oct 15 2022 Trevor Vaughan <trevor@sicura.us> - 6.4.0
+- Add Amazon Linux 2 Support
+
 * Wed Jun 16 2021 Chris Tessmer <chris.tessmer@onyxpoint.com> - 6.3.0
 - Removed support for Puppet 5
 - Ensured support for Puppet 7 in requirements and stdlib
