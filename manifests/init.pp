@@ -63,7 +63,7 @@
 class pki (
   Variant[Boolean,Enum['simp']] $pki                = simplib::lookup('simp_options::pki', { 'default_value' => 'simp' }),
   Stdlib::Absolutepath          $base               = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
-  String                        $certname           = pick($trusted['certname'], $facts['fqdn']),
+  String                        $certname           = pick($trusted['certname'], $facts['networking']['fqdn']),
   String                        $private_key_source = "puppet:///modules/${module_name}/keydist/${certname}/${certname}.pem",
   String                        $public_key_source  = "puppet:///modules/${module_name}/keydist/${certname}/${certname}.pub",
   Boolean                       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
