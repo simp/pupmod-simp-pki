@@ -1,6 +1,6 @@
 {
   "name": "simp-pki",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "author": "SIMP Team",
   "summary": "Manages non-Puppet PKI keys and certificates",
   "license": "Apache-2.0",
@@ -56,6 +56,12 @@
     },
     {
       "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
       "operatingsystemrelease": [
         "8"
       ]
