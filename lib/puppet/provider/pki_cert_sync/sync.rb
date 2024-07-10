@@ -512,7 +512,7 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
       selinux_context.nil? and
         Puppet.debug("Could not get selinux context for '#{src_dir}/#{file}'")
 
-      FileUtils.cp("#{src_dir}/#{file}", file, {:preserve => true})
+      FileUtils.cp("#{src_dir}/#{file}", file, preserve: true)
       resource.set_selinux_context("#{target_dir}/#{file}", selinux_context).nil? and
         Puppet.debug("Could not set selinux context on '#{file}'")
 
