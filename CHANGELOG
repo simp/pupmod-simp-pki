@@ -1,3 +1,6 @@
+* Wed Jul 10 2024 Steven Pritchard <steve@sicura.us> - 6.7.1
+- Fix call to `FileUtils.cp` to work on Ruby 3
+
 * Mon Oct 23 2023 Steven Pritchard <steve@sicura.us> - 6.7.0
 - [puppetsync] Add EL9 support
 
