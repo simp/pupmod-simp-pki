@@ -1,3 +1,6 @@
+* Tue Jun 10 2025 Chris Tessmer <chris.tessmer@onyxpoint.com> - 6.7.2
+- Fix rubocop issues
+
 * Wed Jul 10 2024 Steven Pritchard <steve@sicura.us> - 6.7.1
 - Fix call to `FileUtils.cp` to work on Ruby 3
 

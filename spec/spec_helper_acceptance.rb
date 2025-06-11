@@ -37,8 +37,10 @@ RSpec.configure do |c|
       hosts.each { |sut| copy_pki_to(sut, cert_dir, '/etc/pki/simp-testing') }
     end
   rescue StandardError, ScriptError => e
+    # rubocop:disable Lint/Debugger
     raise e unless ENV['PRY']
     require 'pry'
     binding.pry
+    # rubocop:enable Lint/Debugger
   end
 end
