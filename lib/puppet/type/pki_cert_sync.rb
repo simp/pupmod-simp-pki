@@ -21,9 +21,9 @@ Puppet::Type.newtype(:pki_cert_sync) do
   EOM
 
   def initialize(args)
-    super(args)
+    super
 
-    if self[:tag] then
+    if self[:tag]
       self[:tag] += ['pki']
     else
       self[:tag] = ['pki']
@@ -36,7 +36,7 @@ Puppet::Type.newtype(:pki_cert_sync) do
     super
   end
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc <<-EOM
       The target directory into which to place and hash the X.509
       certificates.
@@ -48,11 +48,11 @@ Puppet::Type.newtype(:pki_cert_sync) do
 
     validate do |value|
       Puppet::Util.absolute_path?(value) or
-        fail Puppet::Error, "Target directory must be an absolute path, not '#{value}'"
+        raise Puppet::Error, "Target directory must be an absolute path, not '#{value}'"
     end
   end
 
-  newparam(:generate_pem_hash_links, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+  newparam(:generate_pem_hash_links, boolean: true, parent: Puppet::Parameter::Boolean) do
     desc <<-EOM
       Whether to generate the PEM file hash links in the target directory
       (:name).  Should only be disabled if the application using the target
@@ -62,7 +62,7 @@ Puppet::Type.newtype(:pki_cert_sync) do
     defaultto true
   end
 
-  newparam(:purge, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+  newparam(:purge, boolean: true, parent: Puppet::Parameter::Boolean) do
     desc <<-EOM
       Whether to purge the target directory (:name). In general, you
       will want to do this to ensure that systems do not get inappropriate
@@ -79,7 +79,7 @@ Puppet::Type.newtype(:pki_cert_sync) do
 
     validate do |value|
       Puppet::Util.absolute_path?(value) or
-        fail Puppet::Error, "Source directory must be an absolute path, not '#{value}'"
+        raise Puppet::Error, "Source directory must be an absolute path, not '#{value}'"
     end
 
     # is = Hash of PEM file info derived from the contents of the source directory.
@@ -87,10 +87,10 @@ Puppet::Type.newtype(:pki_cert_sync) do
     def insync?(is)
       # In this case, we want to compare the contents of the source directory
       # with ourself (resource[:name] in this context)
-      provider.source_insync?(is,resource[:name])
+      provider.source_insync?(is, resource[:name])
     end
 
-    def change_to_s(currentvalue, newvalue)
+    def change_to_s(_currentvalue, _newvalue)
       "'#{resource[:source]}' X.509 CA certificates sync'd to '#{resource[:name]}'"
     end
   end
