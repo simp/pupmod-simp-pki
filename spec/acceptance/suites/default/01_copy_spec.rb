@@ -14,7 +14,7 @@ describe 'pki_copy' do
       let(:pki_true_hieradata) do
         {
           'simp_options::pki' => true,
-       'simp_options::pki::source' => '/etc/pki/simp-testing/pki'
+       'simp_options::pki::source' => '/etc/pki/simp-testing/pki',
         }
       end
       let(:host_fqdn) { fact_on(host, 'fqdn') }
@@ -49,7 +49,7 @@ describe 'pki_copy' do
       let(:pki_false_hieradata) do
         {
           'simp_options::pki' => false,
-       'simp_options::pki::source' => '/etc/pki/simp-testing/pki'
+       'simp_options::pki::source' => '/etc/pki/simp-testing/pki',
         }
       end
       let(:host_fqdn) { fact_on(host, 'fqdn') }

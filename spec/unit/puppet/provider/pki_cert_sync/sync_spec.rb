@@ -22,7 +22,7 @@ def populate_target_dir(source_dir, target_dir, cert_info)
   setup_resource = Puppet::Type.type(:pki_cert_sync).new({
                                                            name: target_dir,
     source: source_dir,
-    provider: 'redhat'
+    provider: 'redhat',
                                                          })
   setup_provider = setup_resource.provider
   its = setup_provider.source
@@ -63,7 +63,7 @@ def verify_provider(source_dir, target_dir, cert_info, cacerts_file, cacerts_no_
   resource = Puppet::Type.type(:pki_cert_sync).new({
                                                      name: target_dir,
     source: source_dir,
-    provider: 'redhat'
+    provider: 'redhat',
                                                    })
   provider = resource.provider
   its = provider.source
@@ -81,7 +81,7 @@ describe provider_class do
     {
       cert1: '4a44b594',
      cert2: 'ae3116e1',
-     cert3: 'db039224'
+     cert3: 'db039224',
     }
   end
 
@@ -111,7 +111,7 @@ describe provider_class do
       Puppet::Type.type(:pki_cert_sync).new({
                                               name: '/some/target/dir',
         source: '/some/source/dir',
-        provider: 'redhat'
+        provider: 'redhat',
                                             })
     end
 
@@ -181,7 +181,7 @@ describe provider_class do
         resource = Puppet::Type.type(:pki_cert_sync).new({
                                                            name: target_dir,
           source: '/does/not/exist/source',
-          provider: 'redhat'
+          provider: 'redhat',
                                                          })
         provider = resource.provider
 
@@ -198,7 +198,7 @@ describe provider_class do
           resource = Puppet::Type.type(:pki_cert_sync).new({
                                                              name: target_dir,
             source: source_dir,
-            provider: 'redhat'
+            provider: 'redhat',
                                                            })
           provider = resource.provider
 
@@ -208,7 +208,7 @@ describe provider_class do
             'd2/cert2.pem'           => 'ae3116e1.0',
             'd3a/d3b/cert3_no_headers.pem' => 'db039224.0',
             'cacerts.pem'            => 'cacerts.pem',
-            'cacerts_no_headers.pem' => 'cacerts_no_headers.pem'
+            'cacerts_no_headers.pem' => 'cacerts_no_headers.pem',
           }
           expect(its).to eq expected_its
 
@@ -227,7 +227,7 @@ describe provider_class do
                                                              name: target_dir,
             source: source_dir,
             provider: 'redhat',
-            generate_pem_hash_links: false
+            generate_pem_hash_links: false,
                                                            })
           provider = resource.provider
 
@@ -237,7 +237,7 @@ describe provider_class do
             'd2/cert2.pem'           => 'd2/cert2.pem',
             'd3a/d3b/cert3_no_headers.pem' => 'd3a/d3b/cert3_no_headers.pem',
             'cacerts.pem'            => 'cacerts.pem',
-            'cacerts_no_headers.pem' => 'cacerts_no_headers.pem'
+            'cacerts_no_headers.pem' => 'cacerts_no_headers.pem',
           }
           expect(its).to eq expected_its
 
@@ -351,7 +351,7 @@ describe provider_class do
           resource = Puppet::Type.type(:pki_cert_sync).new({
                                                              name: target_dir,
             source: source_dir,
-            provider: 'redhat'
+            provider: 'redhat',
                                                            })
           provider = resource.provider
           its = provider.source
@@ -372,7 +372,7 @@ describe provider_class do
                                                              name: target_dir,
             source: source_dir,
             provider: 'redhat',
-            purge: false
+            purge: false,
                                                            })
           provider = resource.provider
           its = provider.source
@@ -392,7 +392,7 @@ describe provider_class do
                                                              name: target_dir,
             source: source_dir,
             provider: 'redhat',
-            purge: false
+            purge: false,
                                                            })
           provider = resource.provider
           its = provider.source
@@ -414,7 +414,7 @@ describe provider_class do
                                                              name: target_dir,
             source: source_dir,
             provider: 'redhat',
-            generate_pem_hash_links: false
+            generate_pem_hash_links: false,
                                                            })
           provider = resource.provider
           its = provider.source
@@ -435,7 +435,7 @@ describe provider_class do
           resource = Puppet::Type.type(:pki_cert_sync).new({
                                                              name: target_dir,
             source: source_dir,
-            provider: 'redhat'
+            provider: 'redhat',
                                                            })
           provider = resource.provider
 
@@ -468,7 +468,7 @@ describe provider_class do
           resource = Puppet::Type.type(:pki_cert_sync).new({
                                                              name: target_dir,
             source: source_dir,
-            provider: 'redhat'
+            provider: 'redhat',
                                                            })
           resource.provider
 
@@ -501,7 +501,7 @@ describe provider_class do
           resource = Puppet::Type.type(:pki_cert_sync).new({
                                                              name: target_dir,
             source: source_dir,
-            provider: 'redhat'
+            provider: 'redhat',
                                                            })
           provider = resource.provider
 
@@ -538,7 +538,7 @@ describe provider_class do
           resource = Puppet::Type.type(:pki_cert_sync).new({
                                                              name: target_dir,
             source: source_dir,
-            provider: 'redhat'
+            provider: 'redhat',
                                                            })
           provider = resource.provider
 
@@ -555,7 +555,7 @@ describe provider_class do
             resource = Puppet::Type.type(:pki_cert_sync).new({
                                                                name: target_dir,
               source: source_dir,
-              provider: 'redhat'
+              provider: 'redhat',
                                                              })
             provider = resource.provider
 
@@ -574,7 +574,7 @@ describe provider_class do
           resource = Puppet::Type.type(:pki_cert_sync).new({
                                                              name: target_dir,
             source: source_dir,
-            provider: 'redhat'
+            provider: 'redhat',
                                                            })
           provider = resource.provider
 
