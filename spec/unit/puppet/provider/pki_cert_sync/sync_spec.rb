@@ -19,11 +19,11 @@ def populate_target_dir(source_dir, target_dir, cert_info)
   # use a pki_cert_sync instance to populate the target dir
   # (this is only used in tests after pki_cert_sync operation
   # on an empty target directory has been verified)
-  setup_resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                           name: target_dir,
+  setup_resource = Puppet::Type.type(:pki_cert_sync).new(
+    name: target_dir,
     source: source_dir,
     provider: 'redhat',
-                                                         })
+  )
   setup_provider = setup_resource.provider
   its = setup_provider.source
   setup_provider.source_insync?(its, target_dir)
@@ -60,11 +60,11 @@ end
 
 # exercise default provider and verify results
 def verify_provider(source_dir, target_dir, cert_info, cacerts_file, cacerts_no_hdrs_file)
-  resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                     name: target_dir,
+  resource = Puppet::Type.type(:pki_cert_sync).new(
+    name: target_dir,
     source: source_dir,
     provider: 'redhat',
-                                                   })
+  )
   provider = resource.provider
   its = provider.source
 
@@ -80,8 +80,8 @@ describe provider_class do
   let(:cert_subj_hash) do
     {
       cert1: '4a44b594',
-     cert2: 'ae3116e1',
-     cert3: 'db039224',
+      cert2: 'ae3116e1',
+      cert3: 'db039224',
     }
   end
 
@@ -108,11 +108,11 @@ describe provider_class do
   context 'stateless methods' do
     let(:provider) { resource.provider }
     let(:resource) do
-      Puppet::Type.type(:pki_cert_sync).new({
-                                              name: '/some/target/dir',
+      Puppet::Type.type(:pki_cert_sync).new(
+        name: '/some/target/dir',
         source: '/some/source/dir',
         provider: 'redhat',
-                                            })
+      )
     end
 
     describe 'files_different?' do
@@ -178,11 +178,11 @@ describe provider_class do
 
     context 'source does not exist' do
       it 'fails when the source dir does not exist' do
-        resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                           name: target_dir,
+        resource = Puppet::Type.type(:pki_cert_sync).new(
+          name: target_dir,
           source: '/does/not/exist/source',
           provider: 'redhat',
-                                                         })
+        )
         provider = resource.provider
 
         msg = "'/does/not/exist/source' is not a valid directory"
@@ -195,20 +195,20 @@ describe provider_class do
         it 'creates and populate the target dir' do
           populate_source_dir(source_dir, cert_info)
 
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
-                                                           })
+          )
           provider = resource.provider
 
           its = provider.source
           expected_its = {
-            'cert1.pem'              => '4a44b594.0',
-            'd2/cert2.pem'           => 'ae3116e1.0',
+            'cert1.pem'                    => '4a44b594.0',
+            'd2/cert2.pem'                 => 'ae3116e1.0',
             'd3a/d3b/cert3_no_headers.pem' => 'db039224.0',
-            'cacerts.pem'            => 'cacerts.pem',
-            'cacerts_no_headers.pem' => 'cacerts_no_headers.pem',
+            'cacerts.pem'                  => 'cacerts.pem',
+            'cacerts_no_headers.pem'       => 'cacerts_no_headers.pem',
           }
           expect(its).to eq expected_its
 
@@ -223,21 +223,21 @@ describe provider_class do
       context 'target does not exist and link generation is disabled' do
         it 'creates and populate the target dir without hash links' do
           populate_source_dir(source_dir, cert_info)
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
             generate_pem_hash_links: false,
-                                                           })
+          )
           provider = resource.provider
 
           its = provider.source
           expected_its = {
-            'cert1.pem'              => 'cert1.pem',
-            'd2/cert2.pem'           => 'd2/cert2.pem',
+            'cert1.pem'                    => 'cert1.pem',
+            'd2/cert2.pem'                 => 'd2/cert2.pem',
             'd3a/d3b/cert3_no_headers.pem' => 'd3a/d3b/cert3_no_headers.pem',
-            'cacerts.pem'            => 'cacerts.pem',
-            'cacerts_no_headers.pem' => 'cacerts_no_headers.pem',
+            'cacerts.pem'                  => 'cacerts.pem',
+            'cacerts_no_headers.pem'       => 'cacerts_no_headers.pem',
           }
           expect(its).to eq expected_its
 
@@ -348,11 +348,11 @@ describe provider_class do
           populate_target_dir(source_dir, target_dir, cert_info)
 
           # exercise provider
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
-                                                           })
+          )
           provider = resource.provider
           its = provider.source
           expect(provider.source_insync?(its, target_dir)).to eq true
@@ -368,12 +368,12 @@ describe provider_class do
           FileUtils.cp(cert3_no_hdrs_file, extra_dir)
 
           # exercise provider
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
             purge: false,
-                                                           })
+          )
           provider = resource.provider
           its = provider.source
           expect(provider.source_insync?(its, target_dir)).to eq true
@@ -388,12 +388,12 @@ describe provider_class do
           FileUtils.cp(cert1_no_hdrs_file, target_dir)
 
           # exercise provider
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
             purge: false,
-                                                           })
+          )
           provider = resource.provider
           its = provider.source
           expect(provider.source_insync?(its, target_dir)).to eq true
@@ -410,12 +410,12 @@ describe provider_class do
           FileUtils.ln_sf(File.join(target_dir, File.basename(cert1_file)), different_link)
 
           # exercise provider
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
             generate_pem_hash_links: false,
-                                                           })
+          )
           provider = resource.provider
           its = provider.source
           expect(provider.source_insync?(its, target_dir)).to eq true
@@ -432,11 +432,11 @@ describe provider_class do
           target_cacerts_no_hdrs = File.join(target_dir, 'cacerts_no_headers.pem')
           FileUtils.cp(cacerts_no_hdrs_file, target_cacerts_no_hdrs)
 
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
-                                                           })
+          )
           provider = resource.provider
 
           # exercise provider
@@ -465,11 +465,11 @@ describe provider_class do
             file.puts invalid_cert
           end
 
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
-                                                           })
+          )
           resource.provider
 
           # exercise provider
@@ -498,11 +498,11 @@ describe provider_class do
           FileUtils.cp(src, File.join(source_dir, "#{cert_hash}.0"))
           FileUtils.cp(src, File.join(source_dir, "#{cert_hash}.3"))
           FileUtils.cp(src, File.join(source_dir, "#{cert_hash}.9"))
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
-                                                           })
+          )
           provider = resource.provider
 
           # exercise provider
@@ -535,11 +535,11 @@ describe provider_class do
       context 'input files change between source() & source_insync?()' do
         it 'handles missing source cert file gracefully' do
           populate_source_dir(source_dir, cert_info)
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
-                                                           })
+          )
           provider = resource.provider
 
           its = provider.source
@@ -552,11 +552,11 @@ describe provider_class do
         ['cacerts.pem', 'cacerts_no_headers.pem'].each do |cacert_file|
           it "handles missing reference #{cacert_file} gracefully" do
             populate_source_dir(source_dir, cert_info)
-            resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                               name: target_dir,
+            resource = Puppet::Type.type(:pki_cert_sync).new(
+              name: target_dir,
               source: source_dir,
               provider: 'redhat',
-                                                             })
+            )
             provider = resource.provider
 
             its = provider.source
@@ -571,11 +571,11 @@ describe provider_class do
       context 'input files change between source() & source=()' do
         it 'handles missing source cert file gracefully' do
           populate_source_dir(source_dir, cert_info)
-          resource = Puppet::Type.type(:pki_cert_sync).new({
-                                                             name: target_dir,
+          resource = Puppet::Type.type(:pki_cert_sync).new(
+            name: target_dir,
             source: source_dir,
             provider: 'redhat',
-                                                           })
+          )
           provider = resource.provider
 
           its = provider.source

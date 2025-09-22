@@ -13,8 +13,8 @@ end
 
 describe 'pki::copy' do
   context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
-      let(:facts) { facts }
+    on_supported_os.each do |os, os_facts|
+      let(:facts) { os_facts }
       context "on #{os}" do
         let(:title) { 'foo' }
 

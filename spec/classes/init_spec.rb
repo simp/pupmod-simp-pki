@@ -22,13 +22,14 @@ shared_examples_for 'pki = simp', :compile do
 end
 
 describe 'pki' do
-  context 'supported operating systems' do
-    on_supported_os.each_value do |facts|
-      let(:facts) do
-        facts.merge({ fqdn: 'test.example.domain' })
-      end
-      let(:node) { 'test.example.domain' }
+  on_supported_os.each do |os, os_facts|
+    let(:facts) do
+      os_facts[:networking][:fqdn] = 'test.example.domain'
+      os_facts
+    end
+    let(:node) { 'test.example.domain' }
 
+    context "on #{os}" do
       context 'with default parameters' do
         it { is_expected.not_to contain_class('auditd') }
         it_behaves_like 'pki = simp'

@@ -4,55 +4,55 @@ test_name 'pki_sync'
 
 describe 'pki_sync' do
   let(:manifest) do
-    <<-EOS
-  file { '/etc/pki/simp':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    seltype => 'cert_t',
-    recurse => true,
-    before  => Pki_cert_sync['/etc/pki/simp/cacerts']
-  }
-  file { '/etc/pki/simp/cacerts':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    seltype => 'cert_t',
-    recurse => true,
-  }
-  pki_cert_sync { '/etc/pki/simp/cacerts':
-    source => '/etc/pki/simp-testing/pki/cacerts/',
-    purge  => true,
-  }
-  EOS
+    <<~EOS
+      file { '/etc/pki/simp':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        seltype => 'cert_t',
+        recurse => true,
+        before  => Pki_cert_sync['/etc/pki/simp/cacerts'],
+      }
+      file { '/etc/pki/simp/cacerts':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        seltype => 'cert_t',
+        recurse => true,
+      }
+      pki_cert_sync { '/etc/pki/simp/cacerts':
+        source => '/etc/pki/simp-testing/pki/cacerts/',
+        purge  => true,
+      }
+    EOS
   end
 
   let(:no_purge_manifest) do
-    <<-EOS
-  file { '/etc/pki/simp':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    seltype => 'cert_t',
-    recurse => true,
-    before  => Pki_cert_sync['/etc/pki/simp/cacerts']
-  }
-  file { '/etc/pki/simp/cacerts':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    seltype => 'cert_t',
-    recurse => true,
-  }
-  pki_cert_sync { '/etc/pki/simp/cacerts':
-    source => '/etc/pki/simp-testing/pki/cacerts/',
-    purge => false
-  }
-  EOS
+    <<~EOS
+      file { '/etc/pki/simp':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        seltype => 'cert_t',
+        recurse => true,
+        before  => Pki_cert_sync['/etc/pki/simp/cacerts']
+      }
+      file { '/etc/pki/simp/cacerts':
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        seltype => 'cert_t',
+        recurse => true,
+      }
+      pki_cert_sync { '/etc/pki/simp/cacerts':
+        source => '/etc/pki/simp-testing/pki/cacerts/',
+        purge => false
+      }
+    EOS
   end
 
   hosts.each do |host|

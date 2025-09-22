@@ -6,18 +6,18 @@ describe 'pki_copy' do
   hosts.each do |host|
     context 'with pki = true' do
       let(:pki_true_manifest) do
-        <<-EOM
-        pki::copy { 'someapp': }
-        pki::copy { 'anotherapp': }
-      EOM
+        <<~EOM
+          pki::copy { 'someapp': }
+          pki::copy { 'anotherapp': }
+        EOM
       end
       let(:pki_true_hieradata) do
         {
-          'simp_options::pki' => true,
-       'simp_options::pki::source' => '/etc/pki/simp-testing/pki',
+          'simp_options::pki'         => true,
+          'simp_options::pki::source' => '/etc/pki/simp-testing/pki',
         }
       end
-      let(:host_fqdn) { fact_on(host, 'fqdn') }
+      let(:host_fqdn) { fact_on(host, 'networking.fqdn') }
 
       it 'works with no errors' do
         set_hieradata_on(host, pki_true_hieradata)
@@ -40,19 +40,19 @@ describe 'pki_copy' do
     end
     context 'with pki = false, and a destination specified' do
       let(:pki_false_manifest) do
-        <<-EOM
-        pki::copy { 'someapp':
-          destination => '/etc/pki/alternate_dest'
-        }
-      EOM
+        <<~EOM
+          pki::copy { 'someapp':
+            destination => '/etc/pki/alternate_dest',
+          }
+        EOM
       end
       let(:pki_false_hieradata) do
         {
-          'simp_options::pki' => false,
-       'simp_options::pki::source' => '/etc/pki/simp-testing/pki',
+          'simp_options::pki'         => false,
+          'simp_options::pki::source' => '/etc/pki/simp-testing/pki',
         }
       end
-      let(:host_fqdn) { fact_on(host, 'fqdn') }
+      let(:host_fqdn) { fact_on(host, 'networking.fqdn') }
 
       it 'works with no errors' do
         set_hieradata_on(host, pki_false_hieradata)
