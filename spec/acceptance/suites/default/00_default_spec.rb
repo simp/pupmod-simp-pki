@@ -91,8 +91,9 @@ describe 'pki_sync' do
       end
 
       it 'the cert should be appended to cacerts.pem' do
-        on host, "grep $(sed 's/^-.*//g' /etc/pki/simp/cacerts/some/subdirectory/*.pem | tr -d '\n') <<< $(sed 's/^-.*//g' /etc/pki/simp/cacerts/cacerts.pem | tr -d '\n')",
-acceptable_exit_codes: [0]
+        on host,
+          "grep $(sed 's/^-.*//g' /etc/pki/simp/cacerts/some/subdirectory/*.pem | tr -d '\n') <<< $(sed 's/^-.*//g' /etc/pki/simp/cacerts/cacerts.pem | tr -d '\n')",
+          acceptable_exit_codes: [0]
       end
 
       #
