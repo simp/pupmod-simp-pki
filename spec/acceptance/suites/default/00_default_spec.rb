@@ -50,7 +50,7 @@ describe 'pki_sync' do
       }
       pki_cert_sync { '/etc/pki/simp/cacerts':
         source => '/etc/pki/simp-testing/pki/cacerts/',
-        purge => false
+        purge  => false,
       }
     EOS
   end

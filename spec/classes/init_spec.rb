@@ -9,12 +9,12 @@ shared_examples_for 'pki = simp', :compile do
   it { is_expected.to create_file('/etc/pki/simp/x509/public').with_ensure('directory') }
 
   it {
-    is_expected.to create_file('/etc/pki/simp/x509/private/test.example.domain.pem') \
+    is_expected.to create_file('/etc/pki/simp/x509/private/test.example.domain.pem')
       .with_source('puppet:///modules/pki_files/keydist/test.example.domain/test.example.domain.pem')
   }
 
   it {
-    is_expected.to create_file('/etc/pki/simp/x509/public/test.example.domain.pub') \
+    is_expected.to create_file('/etc/pki/simp/x509/public/test.example.domain.pub')
       .with_source('puppet:///modules/pki_files/keydist/test.example.domain/test.example.domain.pub')
   }
 
