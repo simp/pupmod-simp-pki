@@ -1,3 +1,6 @@
+* Thu Oct 23 2025 Steven Pritchard <steve@sicura.us> - 6.8.0
+- Support simp-auditd 9.x
+
 * Tue Jun 10 2025 Chris Tessmer <chris.tessmer@onyxpoint.com> - 6.7.2
 - Fix rubocop issues
 
