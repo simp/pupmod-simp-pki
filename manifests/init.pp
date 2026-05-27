@@ -66,28 +66,19 @@ class pki (
   String                        $certname           = pick($trusted['certname'], $facts['networking']['fqdn']),
   String                        $private_key_source = "puppet:///modules/${module_name}/keydist/${certname}/${certname}.pem",
   String                        $public_key_source  = "puppet:///modules/${module_name}/keydist/${certname}/${certname}.pub",
-  Boolean                       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false}),
+  Boolean                       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false }),
   Boolean                       $sync_purge         = true,
   Array[String]                 $cacerts_sources    = [
     "puppet:///modules/${module_name}/keydist/cacerts",
-    "puppet:///modules/${module_name}/keydist/cacerts/${certname}/cacerts"
+    "puppet:///modules/${module_name}/keydist/cacerts/${certname}/cacerts",
   ]
 ) {
-
   if $pki == 'simp' {
-    file { '/etc/pki/simp':
-      ensure => 'directory',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0655',
-      tag    => 'firstrun',
-    }
-
     $_private_key_source = "puppet:///modules/pki_files/keydist/${certname}/${certname}.pem"
     $_public_key_source  = "puppet:///modules/pki_files/keydist/${certname}/${certname}.pub"
     $_cacerts_sources    = [
       'puppet:///modules/pki_files/keydist/cacerts',
-      "puppet:///modules/pki_files/keydist/cacerts/${certname}/cacerts"
+      "puppet:///modules/pki_files/keydist/cacerts/${certname}/cacerts",
     ]
   }
   else {
@@ -113,18 +104,22 @@ class pki (
 
     # Add audit rules for PKI key material
     auditd::rule { 'pki':
-      content => "-w ${base} -p wa -k PKI"
+      content => "-w ${base} -p wa -k PKI",
     }
   }
 
-  $_base_require = $pki ? { 'simp' => File['/etc/pki/simp'], default => undef }
+  $_base_parent = dirname($base)
+  file { $_base_parent:
+    ensure => 'directory',
+  }
+
   file { $base:
     ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
     mode    => '0655',
     tag     => 'firstrun',
-    require => $_base_require
+    require => File[$_base_parent],
   }
 
   file { $private_key_dir:
@@ -133,7 +128,7 @@ class pki (
     group  => 'root',
     mode   => '0550',
     purge  => true,
-    tag    => 'firstrun'
+    tag    => 'firstrun',
   }
 
   file { $public_key_dir:
@@ -142,7 +137,7 @@ class pki (
     group  => 'root',
     mode   => '0555',
     purge  => true,
-    tag    => 'firstrun'
+    tag    => 'firstrun',
   }
 
   file { $private_key:
@@ -152,7 +147,7 @@ class pki (
     source    => $_private_key_source,
     tag       => 'firstrun',
     seltype   => 'cert_t',
-    show_diff => false
+    show_diff => false,
   }
 
   file { $public_key:
@@ -162,7 +157,7 @@ class pki (
     source    => $_public_key_source,
     tag       => 'firstrun',
     seltype   => 'cert_t',
-    show_diff => false
+    show_diff => false,
   }
 
   # This is a temporary holding space for certs coming from the Puppet server.
@@ -181,7 +176,7 @@ class pki (
     source       => $_cacerts_sources,
     sourceselect => 'all',
     tag          => 'firstrun',
-    show_diff    => false
+    show_diff    => false,
   }
 
   file { $cacerts:
@@ -191,12 +186,12 @@ class pki (
     mode    => '0644',
     seltype => 'cert_t',
     recurse => true,
-    tag     => 'firstrun'
+    tag     => 'firstrun',
   }
 
   pki_cert_sync { $cacerts:
     source => $ingress,
     tag    => 'firstrun',
-    purge  => $sync_purge
+    purge  => $sync_purge,
   }
 }
