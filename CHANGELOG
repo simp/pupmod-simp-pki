@@ -1,3 +1,6 @@
+* Wed May 27 2026 Mike Riddle <mike@sicura.us> - 6.8.1
+- Made the creation of /etc/pki/simp/x509 possible if pki::pki isn't 'simp'
+
 * Thu Oct 23 2025 Steven Pritchard <steve@sicura.us> - 6.8.0
 - Support simp-auditd 9.x
 
