@@ -409,19 +409,17 @@ Puppet::Type.type(:pki_cert_sync).provide(:redhat) do
     return true if File.stat(src).size != File.stat(dest).size
 
     # If we've gotten here, brute force by 512B at a time. Stop when a chunk differs.
-    s_file = File.open(src, 'r')
-    d_file = File.open(dest, 'r')
-
     retval = false
-    until s_file.eof?
-      if s_file.read(512) != d_file.read(512)
-        retval = true
-        break
+    File.open(src, 'r') do |s_file|
+      File.open(dest, 'r') do |d_file|
+        until s_file.eof?
+          if s_file.read(512) != d_file.read(512)
+            retval = true
+            break
+          end
+        end
       end
     end
-
-    s_file.close
-    d_file.close
     retval
   end
 
