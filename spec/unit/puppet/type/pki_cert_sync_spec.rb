@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 
-pki_cert_sync_type = Puppet::Type.type(:pki_cert_sync)
+describe 'Puppet::Type::Pki_cert_sync' do
+  let(:pki_cert_sync_type) { Puppet::Type.type(:pki_cert_sync) }
 
-describe pki_cert_sync_type.to_s do
   context 'constructor' do
     it 'accepts a valid required parameters and set defaults' do
       resource = pki_cert_sync_type.new(
