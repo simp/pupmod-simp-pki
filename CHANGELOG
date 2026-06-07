@@ -1,3 +1,6 @@
+* Sun Jun 07 2026 Steven Pritchard <steve@sicura.us> - 6.8.2
+- Additional fixes for rubocop
+
 * Wed May 27 2026 Mike Riddle <mike@sicura.us> - 6.8.1
 - Made the creation of /etc/pki/simp/x509 possible if pki::pki isn't 'simp'
 
