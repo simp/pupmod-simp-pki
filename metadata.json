@@ -1,6 +1,6 @@
 {
   "name": "simp-pki",
-  "version": "6.8.1",
+  "version": "6.8.2",
   "author": "SIMP Team",
   "summary": "Manages non-Puppet PKI keys and certificates",
   "license": "Apache-2.0",
