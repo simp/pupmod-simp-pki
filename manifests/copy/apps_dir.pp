@@ -14,7 +14,7 @@
 class pki::copy::apps_dir (
   Stdlib::Absolutepath $target = '/etc/pki/simp_apps',
   Boolean              $purge  = true
-){
+) {
   assert_private()
 
   file { $target:
