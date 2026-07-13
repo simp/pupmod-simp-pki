@@ -111,7 +111,7 @@ Data type: `Boolean`
 
 Whether or not to enable auditing of the system keys
 
-Default value: `simplib::lookup('simp_options::auditd', { 'default_value' => false})`
+Default value: `simplib::lookup('simp_options::auditd', { 'default_value' => false })`
 
 ##### <a name="-pki--sync_purge"></a>`sync_purge`
 
@@ -137,7 +137,7 @@ Default value:
 ```puppet
 [
     "puppet:///modules/${module_name}/keydist/cacerts",
-    "puppet:///modules/${module_name}/keydist/cacerts/${certname}/cacerts"
+    "puppet:///modules/${module_name}/keydist/cacerts/${certname}/cacerts",
   ]
 ```
 

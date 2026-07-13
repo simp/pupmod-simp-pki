@@ -62,14 +62,13 @@
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define pki::copy (
-  Variant[Boolean,Enum['simp']]  $pki         = simplib::lookup('simp_options::pki', { 'default_value' => false}),
+  Variant[Boolean,Enum['simp']]  $pki         = simplib::lookup('simp_options::pki', { 'default_value' => false }),
   String                         $source      = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
   Optional[Stdlib::Absolutepath] $destination = undef,
   String                         $owner       = 'root',
   String                         $group       = 'root',
 ) {
-
-  include '::pki::copy::apps_dir'
+  include 'pki::copy::apps_dir'
 
   if !$pki {
     if !$destination {
@@ -110,7 +109,7 @@ define pki::copy (
     }
 
     if $pki == 'simp' {
-      include '::pki'
+      include 'pki'
       Class['pki'] -> Pki::Copy[$name]
     }
   }
