@@ -210,7 +210,7 @@ Data type: `Variant[Boolean,Enum['simp']]`
 * If set to ``false``
   * Certificates will *not* be centralized, and you must provide a ``$destination``
 
-Default value: `simplib::lookup('simp_options::pki', { 'default_value' => false})`
+Default value: `simplib::lookup('simp_options::pki', { 'default_value' => false })`
 
 ##### <a name="-pki--copy--name"></a>`name`
 
