@@ -68,7 +68,7 @@ describe 'pki_sync' do
     on host, 'cp /root/keydist1/cacerts/*.pem /etc/pki/simp-testing/pki/cacerts/some/subdirectory'
     on host, 'chgrp -R puppet /etc/pki/simp-testing/'
 
-    # rubocop:disable RSpec/RepeatedExample
+    # rubocop:disable-next RSpec/RepeatedExample
     context 'default parameters (purge = true)' do
       #
       # Given default params and one cert: expect the cert to be synced, a symlink
@@ -152,7 +152,6 @@ describe 'pki_sync' do
         on host, 'ls -A /etc/pki/simp/cacerts/some/subdirectory', acceptable_exit_codes: [0]
       end
     end
-    # rubocop:enable RSpec/RepeatedExample
 
     #
     # Set purged = false.  If a cert is copied into /etc/pki/simp/cacerts, it

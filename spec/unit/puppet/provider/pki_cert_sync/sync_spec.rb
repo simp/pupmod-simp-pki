@@ -513,10 +513,10 @@ describe provider_class do
 
           Dir.chdir(target_dir) do
             expected = [
-              [ "#{cert_hash}.0",                                    nil ],
+              [ "#{cert_hash}.0", nil ],
               [ File.basename(cert1_file),                           "#{cert_hash}.1"],
               [ File.basename(cert1_no_hdrs_file),                   "#{cert_hash}.2"],
-              [ "#{cert_hash}.3",                                    nil ],
+              [ "#{cert_hash}.3", nil ],
               [ File.join('dir1', File.basename(cert1_file)),         "#{cert_hash}.4"],
               [ File.join('dir1', File.basename(cert1_no_hdrs_file)), "#{cert_hash}.5"],
               [ "#{cert_hash}.9", nil ],
