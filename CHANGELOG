@@ -1,3 +1,7 @@
+* Wed Oct 07 2026 Hazel Caballero <hazel@sicura.us> - 7.0.3
+- Remove the ineffective `purge` from the private and public key directories;
+  it never purged because `recurse` was not set
+
 * Mon Aug 24 2026 Steven Pritchard <steve@sicura.us> - 7.0.2
 - [puppetsync] Update metadata.json dependency ranges from the Forge
 
