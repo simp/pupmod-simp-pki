@@ -127,7 +127,6 @@ class pki (
     owner  => 'root',
     group  => 'root',
     mode   => '0550',
-    purge  => true,
     tag    => 'firstrun',
   }
 
@@ -136,7 +135,6 @@ class pki (
     owner  => 'root',
     group  => 'root',
     mode   => '0555',
-    purge  => true,
     tag    => 'firstrun',
   }
 

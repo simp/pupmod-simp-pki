@@ -5,8 +5,8 @@ shared_examples_for 'pki = simp', :compile do
   it { is_expected.to compile.with_all_deps }
   it { is_expected.to create_file('/etc/pki/simp').with_ensure('directory') }
   it { is_expected.to create_file('/etc/pki/simp/x509').with_ensure('directory') }
-  it { is_expected.to create_file('/etc/pki/simp/x509/private').with_ensure('directory') }
-  it { is_expected.to create_file('/etc/pki/simp/x509/public').with_ensure('directory') }
+  it { is_expected.to create_file('/etc/pki/simp/x509/private').with_ensure('directory').without_purge.without_recurse }
+  it { is_expected.to create_file('/etc/pki/simp/x509/public').with_ensure('directory').without_purge.without_recurse }
 
   it {
     is_expected.to create_file('/etc/pki/simp/x509/private/test.example.domain.pem')
