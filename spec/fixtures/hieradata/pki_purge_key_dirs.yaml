@@ -1,0 +1,2 @@
+---
+pki::purge_key_dirs: true

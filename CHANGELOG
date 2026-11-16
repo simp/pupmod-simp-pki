@@ -1,3 +1,9 @@
+* Mon Nov 16 2026 Hazel Caballero <hazel@sicura.us> - 7.2.0
+- Add `pki::purge_key_dirs` (default `false`) to remove stale keys from the
+  private and public key directories and from `pki::copy` copies. This is
+  destructive, and it is skipped when the host's keys cannot be found on
+  the server
+
 * Thu Oct 08 2026 Steven Pritchard <steve@sicura.us> - 7.1.0
 - Add support for OpenVox 9
 - Update metadata.json dependency ranges from the Forge
