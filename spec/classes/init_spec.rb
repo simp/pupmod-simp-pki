@@ -45,6 +45,17 @@ describe 'pki' do
       context 'with purge_key_dirs => true and both keys on the server' do
         let(:params) { { purge_key_dirs: true } }
 
+        # Answer "found" for this host's two keys only, so a wrong key path
+        # makes find_file return undef and the purge assertions fail
+        before(:each) do
+          allow(Puppet::Parser::Files).to receive(:find_file).and_call_original
+          ['test.example.domain.pem', 'test.example.domain.pub'].each do |key|
+            allow(Puppet::Parser::Files).to receive(:find_file)
+              .with("pki_files/keydist/test.example.domain/#{key}", anything)
+              .and_return(__FILE__)
+          end
+        end
+
         it { is_expected.to compile.with_all_deps }
 
         ['private', 'public'].each do |dir|
