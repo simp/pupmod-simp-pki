@@ -53,6 +53,7 @@ The following parameters are available in the `pki` class:
 * [`public_key_source`](#-pki--public_key_source)
 * [`auditd`](#-pki--auditd)
 * [`sync_purge`](#-pki--sync_purge)
+* [`purge_key_dirs`](#-pki--purge_key_dirs)
 * [`cacerts_sources`](#-pki--cacerts_sources)
 
 ##### <a name="-pki--pki"></a>`pki`
@@ -123,6 +124,27 @@ Whether or not the PKI sync type should purge the destination directory
   will have any non-recognized certificates removed.
 
 Default value: `true`
+
+##### <a name="-pki--purge_key_dirs"></a>`purge_key_dirs`
+
+Data type: `Boolean`
+
+Remove every file and directory in ``${base}/private`` and
+``${base}/public`` other than this host's key pair, such as keys left
+behind after the host's ``certname`` changed
+
+* **WARNING:** This is destructive. It also deletes any key material an
+  administrator placed in these directories by hand. Removed files are not
+  backed up to a filebucket.
+* The purge only happens when both key sources are ``puppet:///modules/``
+  URLs and both files exist on the server, so a missing key never leaves
+  the host without one. Otherwise a warning is logged and nothing is
+  purged.
+* ``pki::copy`` reads the same Hiera key to purge the copies it makes.
+* Off by default, and it has never been on by default, so a
+  ``simp:defaults`` compliance profile must not enable it.
+
+Default value: `false`
 
 ##### <a name="-pki--cacerts_sources"></a>`cacerts_sources`
 
@@ -195,6 +217,7 @@ The following parameters are available in the `pki::copy` defined type:
 * [`destination`](#-pki--copy--destination)
 * [`owner`](#-pki--copy--owner)
 * [`group`](#-pki--copy--group)
+* [`purge_key_dirs`](#-pki--copy--purge_key_dirs)
 
 ##### <a name="-pki--copy--pki"></a>`pki`
 
@@ -275,6 +298,20 @@ Data type: `String`
 The group of the directories/files that get copied
 
 Default value: `'root'`
+
+##### <a name="-pki--copy--purge_key_dirs"></a>`purge_key_dirs`
+
+Data type: `Boolean`
+
+Remove files from the ``private`` and ``public`` copies that are no longer
+in ``$source``, so a key removed from the source is also removed here
+
+* **WARNING:** This is destructive. It also deletes anything placed in
+  those copies by hand. Removed files are not backed up to a filebucket.
+* Defaults to the ``pki::purge_key_dirs`` Hiera key, so one setting
+  controls both the source directories and every copy.
+
+Default value: `simplib::lookup('pki::purge_key_dirs', { 'default_value' => false })`
 
 ## Resource types
 

@@ -42,6 +42,42 @@ describe 'pki' do
         it_behaves_like 'pki = simp'
       end
 
+      context 'with purge_key_dirs => true and both keys on the server' do
+        let(:params) { { purge_key_dirs: true } }
+
+        it { is_expected.to compile.with_all_deps }
+
+        ['private', 'public'].each do |dir|
+          it {
+            is_expected.to create_file("/etc/pki/simp/x509/#{dir}")
+              .with_recurse(true).with_purge(true).with_force(true).with_backup(false)
+          }
+        end
+      end
+
+      context 'with purge_key_dirs => true and no keys on the server for this certname' do
+        let(:params) { { purge_key_dirs: true, certname: 'missing.example.domain' } }
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to create_file('/etc/pki/simp/x509/private').without_purge.without_recurse }
+        it { is_expected.to create_file('/etc/pki/simp/x509/public').without_purge.without_recurse }
+      end
+
+      context 'with purge_key_dirs => true and key sources that cannot be checked' do
+        let(:params) do
+          {
+            purge_key_dirs: true,
+            pki: false,
+            private_key_source: 'https://keys.example.domain/test.example.domain.pem',
+            public_key_source: 'https://keys.example.domain/test.example.domain.pub',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to create_file('/etc/pki/simp/x509/private').without_purge.without_recurse }
+        it { is_expected.to create_file('/etc/pki/simp/x509/public').without_purge.without_recurse }
+      end
+
       [true, false].each do |pki|
         context "with pki => #{pki}" do
           let(:params) { { pki: pki } }
