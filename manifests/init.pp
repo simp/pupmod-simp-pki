@@ -53,6 +53,22 @@
 #   * If set to ``true`` (the default), the ``/etc/pki/cacerts`` directory
 #     will have any non-recognized certificates removed.
 #
+# @param purge_key_dirs
+#   Remove every file and directory in ``${base}/private`` and
+#   ``${base}/public`` other than this host's key pair, such as keys left
+#   behind after the host's ``certname`` changed
+#
+#   * **WARNING:** This is destructive. It also deletes any key material an
+#     administrator placed in these directories by hand. Removed files are not
+#     backed up to a filebucket.
+#   * The purge only happens when both key sources are ``puppet:///modules/``
+#     URLs and both files exist on the server, so a missing key never leaves
+#     the host without one. Otherwise a warning is logged and nothing is
+#     purged.
+#   * ``pki::copy`` reads the same Hiera key to purge the copies it makes.
+#   * Off by default, and it has never been on by default, so a
+#     ``simp:defaults`` compliance profile must not enable it.
+#
 # @param cacerts_sources
 #   Modulepath to look in for the CA certs. Normally this is a special
 #   modulepath outside of the normal $codedir. The full path can be found
@@ -68,7 +84,8 @@ class pki (
   String                        $public_key_source  = "puppet:///modules/${module_name}/keydist/${certname}/${certname}.pub",
   Boolean                       $auditd             = simplib::lookup('simp_options::auditd', { 'default_value' => false }),
   Boolean                       $sync_purge         = true,
-  Array[String]                 $cacerts_sources    = [
+  Boolean                       $purge_key_dirs     = false,
+  Array[String]               $cacerts_sources    = [
     "puppet:///modules/${module_name}/keydist/cacerts",
     "puppet:///modules/${module_name}/keydist/cacerts/${certname}/cacerts",
   ]
@@ -122,12 +139,39 @@ class pki (
     require => File[$_base_parent],
   }
 
+  # Purge only when both keys can be found on the server. Otherwise the old
+  # key would be removed even though the new one can't be downloaded, leaving
+  # the host with no key at all.
+  if $purge_key_dirs {
+    $_keys_found = [$_private_key_source, $_public_key_source].all |$source| {
+      $source =~ /\Apuppet:\/\/\/modules\// and find_file(regsubst($source, '\Apuppet:///modules/', '')) =~ NotUndef
+    }
+
+    unless $_keys_found {
+      warning("pki: not purging ${private_key_dir} or ${public_key_dir}: the key sources '${_private_key_source}' and '${_public_key_source}' must both be puppet:///modules/ URLs for files that exist on the server")
+    }
+  }
+  else {
+    $_keys_found = false
+  }
+
+  $_key_dir_purge = $_keys_found ? {
+    true    => {
+      'recurse' => true,
+      'purge'   => true,
+      'force'   => true,
+      'backup'  => false,
+    },
+    default => {},
+  }
+
   file { $private_key_dir:
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
     mode   => '0550',
     tag    => 'firstrun',
+    *      => $_key_dir_purge,
   }
 
   file { $public_key_dir:
@@ -136,6 +180,7 @@ class pki (
     group  => 'root',
     mode   => '0555',
     tag    => 'firstrun',
+    *      => $_key_dir_purge,
   }
 
   file { $private_key:

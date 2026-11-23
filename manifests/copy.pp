@@ -59,16 +59,35 @@
 # @param group
 #   The group of the directories/files that get copied
 #
+# @param purge_key_dirs
+#   Remove files from the ``private`` and ``public`` copies that are no longer
+#   in ``$source``, so a key removed from the source is also removed here
+#
+#   * **WARNING:** This is destructive. It also deletes anything placed in
+#     those copies by hand. Removed files are not backed up to a filebucket.
+#   * Defaults to the ``pki::purge_key_dirs`` Hiera key, so one setting
+#     controls both the source directories and every copy.
+#
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define pki::copy (
-  Variant[Boolean,Enum['simp']]  $pki         = simplib::lookup('simp_options::pki', { 'default_value' => false }),
-  String                         $source      = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
-  Optional[Stdlib::Absolutepath] $destination = undef,
-  String                         $owner       = 'root',
-  String                         $group       = 'root',
+  Variant[Boolean,Enum['simp']]  $pki            = simplib::lookup('simp_options::pki', { 'default_value' => false }),
+  String                         $source         = simplib::lookup('simp_options::pki::source', { 'default_value' => '/etc/pki/simp/x509' }),
+  Optional[Stdlib::Absolutepath] $destination    = undef,
+  String                         $owner          = 'root',
+  String                         $group          = 'root',
+  Boolean                        $purge_key_dirs = simplib::lookup('pki::purge_key_dirs', { 'default_value' => false }),
 ) {
   include 'pki::copy::apps_dir'
+
+  $_key_dir_purge = $purge_key_dirs ? {
+    true    => {
+      'purge'  => true,
+      'force'  => true,
+      'backup' => false,
+    },
+    default => {},
+  }
 
   if !$pki {
     if !$destination {
@@ -122,7 +141,8 @@ define pki::copy (
     recurse   => true,
     source    => "${source}/public",
     seltype   => 'cert_t',
-    show_diff => false
+    show_diff => false,
+    *         => $_key_dir_purge,
   }
 
   file { "${_destination}/private":
@@ -133,7 +153,8 @@ define pki::copy (
     recurse   => true,
     source    => "${source}/private",
     seltype   => 'cert_t',
-    show_diff => false
+    show_diff => false,
+    *         => $_key_dir_purge,
   }
 
   file { "${_destination}/cacerts":

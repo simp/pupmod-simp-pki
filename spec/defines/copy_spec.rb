@@ -9,6 +9,8 @@ shared_examples_for 'pki true' do
   it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/private').with(source: '/etc/pki/simp/x509/private') }
   it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/cacerts').with(source: '/etc/pki/simp/x509/cacerts') }
   it { is_expected.not_to create_file('/etc/pki/simp_apps/foo/pki') }
+  it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/public').without_purge }
+  it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/private').without_purge }
 end
 
 describe 'pki::copy' do
@@ -63,6 +65,30 @@ describe 'pki::copy' do
           it { is_expected.to create_notify('pki_copy_foo') }
           it { is_expected.not_to contain_class('pki') }
           it_behaves_like 'pki true'
+        end
+
+        context 'with pki::purge_key_dirs set in Hiera' do
+          let(:hieradata) { 'pki_purge_key_dirs' }
+          let(:params) { { pki: true } }
+
+          it { is_expected.to compile.with_all_deps }
+
+          ['public', 'private'].each do |dir|
+            it {
+              is_expected.to create_file("/etc/pki/simp_apps/foo/x509/#{dir}")
+                .with_recurse(true).with_purge(true).with_force(true).with_backup(false)
+            }
+          end
+
+          it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/cacerts').without_purge }
+        end
+
+        context 'with purge_key_dirs => false overriding Hiera' do
+          let(:hieradata) { 'pki_purge_key_dirs' }
+          let(:params) { { pki: true, purge_key_dirs: false } }
+
+          it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/public').without_purge }
+          it { is_expected.to create_file('/etc/pki/simp_apps/foo/x509/private').without_purge }
         end
 
         context 'with pki => simp' do
